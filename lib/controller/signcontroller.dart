@@ -7,11 +7,13 @@ import 'package:project3/module/user.dart';
 import 'package:project3/view/emailsign.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:project3/view/home.dart';
 
 import '../widget/sharedwidget.dart';
 
 class UserProvider extends ChangeNotifier {
   User? user;
+  String email = 'error';
 
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController usernamecontroller = TextEditingController();
@@ -22,22 +24,26 @@ class UserProvider extends ChangeNotifier {
     _user = user;
     notifyListeners();
   }
-*/ void getCurrentUserInfo() async {
-    user = await auth.currentUser;
-    print(user == null ? 'error' : user!.email.toString());
+*/
+  void getCurrentUserInfo() async {
+    user = auth.currentUser;
+    email = user!.email.toString();
+    notifyListeners();
+    print('repeat alot');
+    //print(user == null ? 'error' : user!.email.toString());
     toast(txt: user!.email.toString());
   }
+
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore storage = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: <String>["email"],
   );
- 
 
-  Future<void> google_SignIn() async {
+  Future<void> google_SignIn(context) async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-     // toast(txt: 'sad');
+      // toast(txt: 'sad');
       final GoogleSignInAuthentication googleAuth =
           await googleUser!.authentication;
 
@@ -45,26 +51,27 @@ class UserProvider extends ChangeNotifier {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-     // makemassege(msg: 'dddd');
+      // makemassege(msg: 'dddd');
       try {
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
         // makemassege(msg: user!.phoneNumber.toString());
-        // getCurrentUserInfo();
-        //  notifyListeners();
+        getCurrentUserInfo();
+        notifyListeners();
+        navigateto(context: context, widget: HomePage());
       } on FirebaseAuthException catch (e) {
-       // toast(txt: e.code.toString());
+        toast(txt: e.code.toString());
         if (e.code == 'user-not-found') {
-       //   makemassege(msg: 'userNotFound');
+          makemassege(msg: 'userNotFound');
         } else if (e.code == 'wrong-password') {
-       //   makemassege(msg: 'wrong password');
+          makemassege(msg: 'wrong password');
         } else {
-       //   makemassege(msg: e.toString());
+          makemassege(msg: e.toString());
         }
       } catch (e) {
-      //  makemassege(msg: e.toString());
+        makemassege(msg: e.toString());
       }
-      // print('Signed in as ${user!.displayName} (${user!.uid})');
+      print('Signed in as ${user!.displayName} (${user!.uid})');
     } catch (e) {
       print('Error signing in with Google: $e');
 
@@ -94,6 +101,11 @@ class UserProvider extends ChangeNotifier {
   void logout() async {
     try {
       await FirebaseAuth.instance.signOut();
+      await _googleSignIn.signOut();
+      if (auth.currentUser != null) {
+        print('omar     tt- ${auth.currentUser!.email.toString()}');
+      }
+      clearUser();
       // Navigate to the sign in page after successful sign out
     } catch (e) {
       // Handle sign out errors, if any

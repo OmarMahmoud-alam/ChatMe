@@ -68,7 +68,7 @@ class SignIn extends StatelessWidget {
                 Center(
                   child: IconButton(
                     onPressed: () {
-                      provider.google_SignIn();
+                      provider.google_SignIn(context);
                     },
                     icon: const GoogleLogo(size: 200),
                   ),

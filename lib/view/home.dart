@@ -17,9 +17,7 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(provider.user == null
-                ? 'error'
-                : provider.user!.email.toString()),
+            Text(provider.email),
             SizedBox(
               height: 10,
             ),

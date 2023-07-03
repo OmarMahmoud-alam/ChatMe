@@ -14,27 +14,13 @@ class email extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<UserProvider>(context);
 
-    return Scaffold(
-      body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-          if (User == null) {
-            print(
-                'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd');
-            return SignIn();
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            // Show a loading spinner if the stream is not ready yet
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasData) {
-            provider.getCurrentUserInfo();
-            // If the user is signed in, show the home page
-            return HomePage();
-          } else {
-            // If the user is not signed in, show the sign in page
-            return SignIn();
-          }
-        },
-      ),
-    );
+    provider.getCurrentUserInfo();
+    if (provider.user != null) {
+      provider.getCurrentUserInfo();
+      return HomePage();
+    } else {
+      // If the user is not signed in, show the sign in page
+      return SignIn();
+    }
   }
 }
