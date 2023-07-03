@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:project3/controller/state.dart';
+import 'package:project3/learn/controller/state.dart';
 
 class Welcomecontrol extends GetxController {
   Welcomecontrol();
