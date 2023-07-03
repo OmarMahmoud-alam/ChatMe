@@ -22,22 +22,22 @@ class UserProvider extends ChangeNotifier {
     _user = user;
     notifyListeners();
   }
-*/
+*/ void getCurrentUserInfo() async {
+    user = await auth.currentUser;
+    print(user == null ? 'error' : user!.email.toString());
+    toast(txt: user!.email.toString());
+  }
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore storage = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: <String>["email"],
   );
-  void getCurrentUserInfo() async {
-    user = await auth.currentUser;
-    print(user == null ? 'error' : user!.email.toString());
-    toast(txt: user!.email.toString());
-  }
+ 
 
   Future<void> google_SignIn() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      toast(txt: 'sad');
+     // toast(txt: 'sad');
       final GoogleSignInAuthentication googleAuth =
           await googleUser!.authentication;
 
@@ -45,7 +45,7 @@ class UserProvider extends ChangeNotifier {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      makemassege(msg: 'dddd');
+     // makemassege(msg: 'dddd');
       try {
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
@@ -53,16 +53,16 @@ class UserProvider extends ChangeNotifier {
         // getCurrentUserInfo();
         //  notifyListeners();
       } on FirebaseAuthException catch (e) {
-        toast(txt: e.code.toString());
+       // toast(txt: e.code.toString());
         if (e.code == 'user-not-found') {
-          makemassege(msg: 'userNotFound');
+       //   makemassege(msg: 'userNotFound');
         } else if (e.code == 'wrong-password') {
-          makemassege(msg: 'wrong password');
+       //   makemassege(msg: 'wrong password');
         } else {
-          makemassege(msg: e.toString());
+       //   makemassege(msg: e.toString());
         }
       } catch (e) {
-        makemassege(msg: e.toString());
+      //  makemassege(msg: e.toString());
       }
       // print('Signed in as ${user!.displayName} (${user!.uid})');
     } catch (e) {
