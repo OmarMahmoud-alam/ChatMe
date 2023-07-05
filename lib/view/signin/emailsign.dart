@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project3/controller/signcontroller.dart';
 import 'package:project3/view/home.dart';
-import 'package:project3/widget/register.dart';
+import 'package:project3/view/signin/register.dart';
 import 'package:project3/widget/sharedwidget.dart';
-import 'package:project3/widget/signin.dart';
+import 'package:project3/view/signin/signin.dart';
 import 'package:provider/provider.dart';
 
 class email extends StatelessWidget {

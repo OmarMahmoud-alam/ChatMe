@@ -6,8 +6,12 @@ class inputdata extends StatelessWidget {
     required this.Controller,
     this.label,
     this.validation,
+    this.maxline = 1,
+    this.minline,
   }) : super(key: key);
   final TextEditingController Controller;
+  final int maxline;
+  final int? minline;
   String? label;
 
   String? Function(String?)? validation;
@@ -15,6 +19,8 @@ class inputdata extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: maxline,
+      minLines: minline,
       controller: Controller,
       decoration: InputDecoration(
         labelText: label,

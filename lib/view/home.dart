@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project3/controller/signcontroller.dart';
-import 'package:project3/widget/signin.dart';
+import 'package:project3/view/signin/signin.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {

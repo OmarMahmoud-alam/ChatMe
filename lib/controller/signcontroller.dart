@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:project3/controller/google_auto.dart';
 import 'package:project3/module/user.dart';
-import 'package:project3/view/emailsign.dart';
+import 'package:project3/view/signin/emailsign.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project3/view/home.dart';
@@ -34,10 +33,18 @@ class UserProvider extends ChangeNotifier {
     toast(txt: user!.email.toString());
   }
 
+  late final idToken;
+
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore storage = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: <String>["email"],
+    scopes: <String>[
+      'email',
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/user.phonenumbers.read",
+      "https://www.googleapis.com/auth/user.birthday.read",
+      "https://www.googleapis.com/auth/profile.agerange.read"
+    ],
   );
 
   Future<void> google_SignIn(context) async {
@@ -55,7 +62,7 @@ class UserProvider extends ChangeNotifier {
       try {
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
-        // makemassege(msg: user!.phoneNumber.toString());
+        print(userCredential.user.toString());
         getCurrentUserInfo();
         notifyListeners();
         navigateto(context: context, widget: HomePage());
