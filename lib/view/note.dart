@@ -19,8 +19,7 @@ class Notehome extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           floatingActionButton: FloatingActionButton(
-              backgroundColor: Colors.blue,
-              // color: Colors.blue,
+            backgroundColor:Colors.blue,
               onPressed: () {
                 showModalBottomSheet(
                   context: context,
@@ -41,9 +40,10 @@ class Notehome extends StatelessWidget {
           body: LayoutBuilder(builder: (context, constraints) {
             double height = 170; //(constraints.maxHeight / 4) - 8;
             double width = (constraints.maxWidth - 100);
+            print(height);
             print(width);
-            return blocprovid.notes.isEmpty
-                ? const CircularProgressIndicator()
+            return blocprovid.notes.length == 0
+                ? CircularProgressIndicator()
                 : ListView.builder(
                     physics: const BouncingScrollPhysics(),
                     itemCount: blocprovid.notes.length,
@@ -52,7 +52,7 @@ class Notehome extends StatelessWidget {
                         height,
                         width,
                         note: blocprovid.notes[index],
-                        index: index,
+                        index:index,
                       );
                     });
           }),
