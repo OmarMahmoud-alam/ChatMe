@@ -23,10 +23,10 @@ class EditNode extends StatelessWidget {
           children: [
             Customappbar(
               title: 'Editapp',
-              icon: Icon(Icons.join_right_sharp),
+              icon: const Icon(Icons.join_right_sharp),
               pressfunction: () {
-                if (titlecontroller.text.length > 0 ||
-                    notedatacontroller.text.length > 0) {
+                if (titlecontroller.text.isNotEmpty ||
+                    notedatacontroller.text.isNotEmpty) {
                   NoteModule newnote = NoteModule(
                       title: titlecontroller.text,
                       content: notedatacontroller.text,
@@ -38,14 +38,14 @@ class EditNode extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Error in enter Note\'s data '),
-                        content: Text('title or content or Both is empty '),
+                        title: const Text('Error in enter Note\'s data '),
+                        content: const Text('title or content or Both is empty '),
                         actions: [
                           IconButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              icon: Icon(Icons.cancel))
+                              icon: const Icon(Icons.cancel))
                         ],
                       );
                     },
@@ -53,14 +53,14 @@ class EditNode extends StatelessWidget {
                 }
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             inputdata(
               controller: titlecontroller,
               label: 'title',
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             inputdata(
@@ -92,19 +92,19 @@ class Customappbar extends StatelessWidget {
       elevation: 5,
       child: Container(
         // decoration: BoxDecoration(shape: ),
-        padding: EdgeInsets.only(top: 20.0, right: 10, left: 10, bottom: 5),
+        padding: const EdgeInsets.only(top: 20.0, right: 10, left: 10, bottom: 5),
         //height: 70,
-        color: Color.fromARGB(255, 71, 69, 64),
+        color: const Color.fromARGB(255, 71, 69, 64),
         child: Row(
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: icon,
               onPressed: pressfunction,

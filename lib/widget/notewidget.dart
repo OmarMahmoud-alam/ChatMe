@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project3/controller/notecontroller.dart';
 import 'package:project3/module/notemodule.dart';
 import 'package:project3/view/Editnode.dart';
 import 'package:project3/widget/sharedwidget.dart';
-import 'package:provider/provider.dart';
 
 import '../addnotecubit/addnote_cubit.dart';
 
@@ -42,9 +40,9 @@ class NoteWidget extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   IconButton(
-                      icon: Icon(Icons.wallet),
+                      icon: const Icon(Icons.wallet),
                       onPressed: () => blocprovid.deletenote(note)),
                 ],
               ),
@@ -63,7 +61,7 @@ class NoteWidget extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   Text('created at ${note.date.toString()}'),
                 ],
               ),

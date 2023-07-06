@@ -42,8 +42,8 @@ class Notehome extends StatelessWidget {
             double height = 170; //(constraints.maxHeight / 4) - 8;
             double width = (constraints.maxWidth - 100);
             print(width);
-            return blocprovid.notes.length == 0
-                ? CircularProgressIndicator()
+            return blocprovid.notes.isEmpty
+                ? const CircularProgressIndicator()
                 : ListView.builder(
                     physics: const BouncingScrollPhysics(),
                     itemCount: blocprovid.notes.length,

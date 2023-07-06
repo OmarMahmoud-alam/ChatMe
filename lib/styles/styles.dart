@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Style {
-  static Color textColor = Color(0xFF222939);
+  static Color textColor = const Color(0xFF222939);
 
   static const height25 = SizedBox(
     height: 25,
@@ -13,9 +13,9 @@ class Style {
       fontSize: 14, fontFamily: 'Poppins', color: textColor, letterSpacing: 2);
 
   static TextStyle f16white =
-      TextStyle(color: Colors.white, fontFamily: 'Poppins', fontSize: 16);
+      const TextStyle(color: Colors.white, fontFamily: 'Poppins', fontSize: 16);
 
-  static TextStyle f24whitebold = TextStyle(
+  static TextStyle f24whitebold = const TextStyle(
       fontSize: 24,
       fontFamily: 'Poppins',
       color: Colors.white,
