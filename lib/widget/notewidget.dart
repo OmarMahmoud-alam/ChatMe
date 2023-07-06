@@ -11,7 +11,8 @@ class NoteWidget extends StatelessWidget {
   final double width;
   final NoteModule note;
   final int index;
-  const NoteWidget(this.height, this.width, {super.key, required this.note,required this.index});
+  const NoteWidget(this.height, this.width,
+      {super.key, required this.note, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,8 @@ class NoteWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        navigateto(context: context, widget: EditNode( note: note,index:index));
+        navigateto(
+            context: context, widget: EditNode(note: note, index: index));
       },
       child: Container(
         padding: const EdgeInsets.all(14.0),
@@ -36,6 +38,8 @@ class NoteWidget extends StatelessWidget {
             children: [
               Text(
                 note.title,
+                maxLines: 1,
+                overflow: TextOverflow.clip,
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               Row(
