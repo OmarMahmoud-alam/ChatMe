@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project3/controller/signcontroller.dart';
 import 'package:project3/widget/sharedwidget.dart';
@@ -7,7 +6,7 @@ import 'package:project3/widget/widgets.dart';
 import 'package:provider/provider.dart';
 
 class register extends StatelessWidget {
-  register({super.key});
+  const register({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +15,10 @@ class register extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('register'),
+        title: const Text('register'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: formKey,
           child: SingleChildScrollView(
@@ -27,10 +26,10 @@ class register extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 inputdata(
-                  Controller: provider.usernamecontroller,
+                  controller: provider.usernamecontroller,
                   label: 'UserName',
                   validation: (s) {
-                    if (s!.isEmpty || s == null) {
+                    if (s!.isEmpty) {
                       return 'Username can\'t be empty';
                     }
                     return null;
@@ -38,7 +37,7 @@ class register extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 inputdata(
-                  Controller: provider.emailcontroller,
+                  controller: provider.emailcontroller,
                   label: 'email',
                   validation: (s) {
                     return provider.email_validation(s!);
@@ -46,7 +45,7 @@ class register extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 inputdata(
-                  Controller: provider.passwordcontroller,
+                  controller: provider.passwordcontroller,
                   label: ' password',
                   validation: (s) {
                     return provider.Password_validation(s!);
@@ -54,7 +53,7 @@ class register extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 inputdata(
-                  Controller: provider.passwordcontroller2,
+                  controller: provider.passwordcontroller2,
                   label: ' password',
                   validation: (s) {
                     if (provider.passwordcontroller.text != s) {
@@ -81,11 +80,11 @@ class register extends StatelessWidget {
                   },
                 ),
               */
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Center(
                   child: Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                         borderRadius: (BorderRadius.circular(100.0))),
                     child: ElevatedButton(
@@ -93,13 +92,13 @@ class register extends StatelessWidget {
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
-                            side: BorderSide(
+                            side: const BorderSide(
                                 width: 1,
                                 color: Color.fromARGB(255, 201, 76, 76)),
                           ),
                         ),
                       ),
-                      child: Text('registe '),
+                      child: const Text('registe '),
                       onPressed: () => provider.usersignup(formKey),
                     ),
                   ),
@@ -107,9 +106,9 @@ class register extends StatelessWidget {
                 Center(
                   child: TextButton(
                       onPressed: () {
-                        navigateto(context: context, widget: SignIn());
+                        navigateto(context: context, widget: const SignIn());
                       },
-                      child: Text('have already account')),
+                      child: const Text('have already account')),
                 ),
               ],
             ),

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:project3/module/user.dart';
-import 'package:project3/view/signin/emailsign.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project3/view/home.dart';
 
@@ -40,10 +38,6 @@ class UserProvider extends ChangeNotifier {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: <String>[
       'email',
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/user.phonenumbers.read",
-      "https://www.googleapis.com/auth/user.birthday.read",
-      "https://www.googleapis.com/auth/profile.agerange.read"
     ],
   );
 
@@ -65,7 +59,7 @@ class UserProvider extends ChangeNotifier {
         print(userCredential.user.toString());
         getCurrentUserInfo();
         notifyListeners();
-        navigateto(context: context, widget: HomePage());
+        navigateto(context: context, widget: const HomePage());
       } on FirebaseAuthException catch (e) {
         toast(txt: e.code.toString());
         if (e.code == 'user-not-found') {
@@ -196,7 +190,7 @@ class UserProvider extends ChangeNotifier {
   String? Password_validation(String s) {
     RegExp passvalid =
         RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-    if (s.length < 5 || s == null) {
+    if (s.length < 5) {
       return 'something is wrong in password pls check again';
     }
     return null;

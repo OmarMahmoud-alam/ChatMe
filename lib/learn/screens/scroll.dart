@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class bottomba extends StatelessWidget {
   int _indexbottom = 2;
+
+  bottomba({super.key});
 
   void _ontapbottom(int index) {
     _indexbottom = index;
@@ -21,7 +22,7 @@ class bottomba extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   //scrollDirection: Axis.horizontal,
                   itemCount: 30,
                   itemBuilder: (BuildContext context, int index) {
@@ -37,7 +38,7 @@ class bottomba extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 30,
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
@@ -55,7 +56,7 @@ class bottomba extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         onTap: _ontapbottom,
         currentIndex: _indexbottom,
-        backgroundColor: Color.fromARGB(255, 52, 212, 37),
+        backgroundColor: const Color.fromARGB(255, 52, 212, 37),
         elevation: 10,
         selectedIconTheme: const IconThemeData(size: 30),
         unselectedIconTheme: const IconThemeData(size: 30),

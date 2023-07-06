@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'web_H.dart';
 //import '../colab/cubit.dart';
 class DefaultButton extends StatelessWidget {
-  DefaultButton({
+  DefaultButton({super.key, 
     this.width = double.infinity,
     this.background = Colors.blue,
     this.isUpperCase = true,
@@ -25,22 +25,22 @@ class DefaultButton extends StatelessWidget {
     return Container(
       width: width,
       height: 50.0,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          radius,
+        ),
+        color: background,
+      ),
       child: MaterialButton(
         onPressed: () {
           function();
         },
         child: Text(
           isUpperCase ? text.toUpperCase() : text,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
           ),
         ),
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          radius,
-        ),
-        color: background,
       ),
     );
   }
@@ -61,7 +61,7 @@ class defaultFormField extends StatelessWidget {
   IconData? suffix;
   Function? suffixPressed;
   late bool isClickable;
-  defaultFormField({
+  defaultFormField({super.key, 
     required this.controller,
     required this.type,
     this.onSubmit,
@@ -89,8 +89,8 @@ class defaultFormField extends StatelessWidget {
       onTap: onTap,
       validator: validate,
       decoration: InputDecoration(
-        labelText: label ?? null,
-        hintText: hint ?? null,
+        labelText: label,
+        hintText: hint,
         prefixIcon: Icon(
           prefix,
         ),

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project3/controller/signcontroller.dart';
 import 'package:project3/view/signin/register.dart';
@@ -8,7 +7,7 @@ import 'package:project3/widget/widgets.dart';
 import 'package:provider/provider.dart';
 
 class SignIn extends StatelessWidget {
-  SignIn({super.key});
+  const SignIn({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +16,10 @@ class SignIn extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign In'),
+        title: const Text('Sign In'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: formInput(formKey: formKey, provider: provider),
       ),
     );
@@ -46,7 +45,7 @@ class formInput extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             inputdata(
-              Controller: provider.emailcontroller,
+              controller: provider.emailcontroller,
               label: 'email',
               validation: (s) {
                 return provider.email_validation(s!);
@@ -54,13 +53,13 @@ class formInput extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             inputdata(
-              Controller: provider.passwordcontroller,
+              controller: provider.passwordcontroller,
               label: ' password',
               validation: (s) {
                 return provider.Password_validation(s!);
               },
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Center(
               child: Container(
                 width: 100,
@@ -72,13 +71,13 @@ class formInput extends StatelessWidget {
                     shape: MaterialStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
-                        side: BorderSide(
+                        side: const BorderSide(
                             width: 1,
                             color: Color.fromARGB(255, 201, 76, 76)),
                       ),
                     ),
                   ),
-                  child: Text('Sign In'),
+                  child: const Text('Sign In'),
                   onPressed: () => provider.formcheck(formKey),
                 ),
               ),
@@ -94,9 +93,9 @@ class formInput extends StatelessWidget {
             Center(
               child: TextButton(
                   onPressed: () {
-                    navigateto(context: context, widget: register());
+                    navigateto(context: context, widget: const register());
                   },
-                  child: Text('i don\'t have account create one')),
+                  child: const Text('i don\'t have account create one')),
             ),
           ],
         ),

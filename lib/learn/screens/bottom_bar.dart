@@ -26,7 +26,7 @@ class _bottombarState extends State<bottombar> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: _ontapbottom,
         currentIndex: _indexbottom,
-        backgroundColor: Color.fromARGB(255, 52, 212, 37),
+        backgroundColor: const Color.fromARGB(255, 52, 212, 37),
         elevation: 10,
         selectedIconTheme: const IconThemeData(size: 30),
         unselectedIconTheme: const IconThemeData(size: 30),

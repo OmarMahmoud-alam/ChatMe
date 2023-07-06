@@ -5,9 +5,9 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:project3/addnotecubit/addnote_cubit.dart';
 import 'package:project3/controller/notecontroller.dart';
 import 'package:project3/controller/signcontroller.dart';
-import 'package:project3/learn/screens/scroll.dart';
+import 'package:project3/module/notemodule.dart';
+import 'package:project3/styles/styles.dart';
 import 'package:project3/view/note.dart';
-import 'package:project3/view/signin/emailsign.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
@@ -17,7 +17,8 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Hive.initFlutter();
-  await Hive.openBox('testBox');
+  Hive.registerAdapter(NodeModuleAdapter());
+  await Hive.openBox<NoteModule>(Comman.knodebox);
 
   runApp(const MyApp());
 }
@@ -44,11 +45,11 @@ class MyApp extends StatelessWidget {
           builder: (context, child) {
             final provide = Provider.of<UserProvider>(context);
 
-            return MaterialApp(
+            return const MaterialApp(
               title: 'Flutter Demo',
               debugShowCheckedModeBanner: false,
               //  theme: provide.theme,
-              home: const Notehome(),
+              home: Notehome(),
             );
           }),
     );

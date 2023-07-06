@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 
 class inputdata extends StatelessWidget {
-  inputdata({
+  const inputdata({
     Key? key,
-    required this.Controller,
+    required this.controller,
     this.label,
     this.validation,
-    this.maxline = 1,
     this.minline,
   }) : super(key: key);
-  final TextEditingController Controller;
-  final int maxline;
-  final int? minline;
-  String? label;
+  final TextEditingController controller;
 
-  String? Function(String?)? validation;
+  final int? minline;
+  final String? label;
+
+  final String? Function(String?)? validation;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      maxLines: maxline,
+      maxLines: minline,
       minLines: minline,
-      controller: Controller,
+      controller: controller,
       decoration: InputDecoration(
         labelText: label,
         border: const OutlineInputBorder(

@@ -6,18 +6,17 @@ part of 'notemodule.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class NoteAdapter extends TypeAdapter<NodeModule> {
+class NodeModuleAdapter extends TypeAdapter<NoteModule> {
   @override
   final int typeId = 0;
 
   @override
-  NodeModule read(BinaryReader reader) {
+  NoteModule read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return NodeModule(
-      id: fields[0] as int,
+    return NoteModule(
       title: fields[1] as String,
       content: fields[2] as String,
       date: fields[3] as DateTime,
@@ -26,11 +25,9 @@ class NoteAdapter extends TypeAdapter<NodeModule> {
   }
 
   @override
-  void write(BinaryWriter writer, NodeModule obj) {
+  void write(BinaryWriter writer, NoteModule obj) {
     writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.id)
+      ..writeByte(4)
       ..writeByte(1)
       ..write(obj.title)
       ..writeByte(2)
@@ -47,7 +44,7 @@ class NoteAdapter extends TypeAdapter<NodeModule> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is NoteAdapter &&
+      other is NodeModuleAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

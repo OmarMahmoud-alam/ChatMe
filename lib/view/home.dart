@@ -11,25 +11,25 @@ class HomePage extends StatelessWidget {
     final provider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(provider.email),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             ElevatedButton(
                 onPressed: () {
                   provider.logout();
-                  Navigator.of(context).pushReplacement(new MaterialPageRoute(
-                      builder: (BuildContext context) => SignIn()));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (BuildContext context) => const SignIn()));
                 },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.red)),
-                child: Text('log out'))
+                child: const Text('log out'))
           ],
         ),
       ),
