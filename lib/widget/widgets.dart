@@ -6,21 +6,29 @@ class inputdata extends StatelessWidget {
     required this.controller,
     this.label,
     this.validation,
-    this.minline,
+    this.textInputAction,
+    this.onEditingComplete,
+    this.autofillHint,
+    this.minline = 1,
   }) : super(key: key);
   final TextEditingController controller;
+  final Iterable<String>? autofillHint;
 
-  final int? minline;
+  final int minline;
   final String? label;
-
+final TextInputAction? textInputAction;
+final void Function()? onEditingComplete;
   final String? Function(String?)? validation;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textInputAction: textInputAction,
+      onEditingComplete: onEditingComplete,
       maxLines: minline,
       minLines: minline,
       controller: controller,
+      autofillHints: autofillHint,
       decoration: InputDecoration(
         labelText: label,
         border: const OutlineInputBorder(
