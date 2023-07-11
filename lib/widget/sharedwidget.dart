@@ -5,7 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'web_H.dart';
 //import '../colab/cubit.dart';
 class DefaultButton extends StatelessWidget {
-  DefaultButton({super.key, 
+  DefaultButton({
+    super.key,
     this.width = double.infinity,
     this.background = Colors.blue,
     this.isUpperCase = true,
@@ -61,8 +62,11 @@ class defaultFormField extends StatelessWidget {
   IconData? suffix;
   Function? suffixPressed;
   late bool isClickable;
-  defaultFormField({super.key, 
+  final Color? fillcolor;
+  defaultFormField({
+    super.key,
     required this.controller,
+    this.fillcolor,
     required this.type,
     this.onSubmit,
     this.border = const OutlineInputBorder(),
@@ -89,6 +93,7 @@ class defaultFormField extends StatelessWidget {
       onTap: onTap,
       validator: validate,
       decoration: InputDecoration(
+        fillColor: fillcolor,
         labelText: label,
         hintText: hint,
         prefixIcon: Icon(

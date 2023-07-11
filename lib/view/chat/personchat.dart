@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project3/widget/sharedwidget.dart';
 
-class ChatD extends StatelessWidget {
+class ChatDetails extends StatelessWidget {
   final TextEditingController massagecontroller = TextEditingController();
+
+  ChatDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
