@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project3/controller/signcontroller.dart';
+import 'package:project3/view/signin/emailsign.dart';
 import 'package:project3/widget/sharedwidget.dart';
+import 'package:provider/provider.dart';
 
 class Settingapp extends StatelessWidget {
   @override
@@ -227,8 +230,10 @@ class Settingapp extends StatelessWidget {
                   radius: 10,
                   background: Colors.red,
                   function: () {
+                    Provider.of<UserProvider>(context, listen: false).logout();
+
                     //  Cubitsetting.get(context).logout();
-                    // navigateto(context: context, widget: Sign());
+                    navigateto(context: context, widget: const email());
                   },
                   text: 'logout')),
         ],

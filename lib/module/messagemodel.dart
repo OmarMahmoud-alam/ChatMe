@@ -2,7 +2,7 @@ class MassageModel {
   late String senduid;
   late String receiveid;
   late String text;
-  late String datetime;
+  late int datetime;
 
 
   MassageModel({

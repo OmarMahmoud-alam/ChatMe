@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:project3/controller/signcontroller.dart';
-import 'package:project3/view/signin/emailsign.dart';
 import 'package:project3/view/signin/register.dart';
 import 'package:project3/widget/googlelog.dart';
 import 'package:project3/widget/sharedwidget.dart';
@@ -103,7 +101,7 @@ class formInput extends StatelessWidget {
     final TextEditingController controlle = TextEditingController();
     final TextEditingController controlle2 = TextEditingController();
 
-    AlertDialog alert2 = AlertDialog(
+    /*AlertDialog alert2 = AlertDialog(
       title: Text("My title"),
       content: Text("enter the sms"),
       actions: [
@@ -114,8 +112,8 @@ class formInput extends StatelessWidget {
             },
             child: Text('entered the code')),
       ],
-    );
-    AlertDialog alert = AlertDialog(
+    );*/
+    /* AlertDialog alert = AlertDialog(
       title: Text("My title"),
       content: Text("enter the phone number"),
       actions: [
@@ -124,7 +122,7 @@ class formInput extends StatelessWidget {
             onPressed: () async {
               provider.phone_autho("+2${controlle.text}");
               Navigator.of(context).pop();
-              showDialog(
+             showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return alert2;
@@ -133,7 +131,7 @@ class formInput extends StatelessWidget {
             },
             child: Text('sign in')),
       ],
-    );
+    );*/
 
     return AutofillGroup(
       child: Form(
@@ -213,12 +211,12 @@ class formInput extends StatelessWidget {
               ),
               IconButton(
                   onPressed: () {
-                    showDialog(
+                    /*showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return alert;
                       },
-                    );
+                    );*/
                   },
                   icon: Icon(Icons.phone_android)),
               SizedBox(

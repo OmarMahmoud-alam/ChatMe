@@ -4,17 +4,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:project3/module/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:project3/view/home.dart';
+import 'package:project3/view/chat%20details/mainchat.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 import '../widget/sharedwidget.dart';
 
-import 'package:firebase_core/firebase_core.dart';
-
 class UserProvider extends ChangeNotifier {
   User? user;
-  String email = 'error';
+  SocialUserModel? meAsUser;
 
+  int eee = 0;
+  String email = 'error';
+  final db = FirebaseFirestore.instance;
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController usernamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
@@ -24,7 +25,11 @@ class UserProvider extends ChangeNotifier {
     _user = user;
     notifyListeners();
   }
-*/
+
+void met(){
+  db.collection("users").where("id", isNotEqualTo: user!.uid).withConverter
+  (fromFirestore: , toFirestore: toFirestore);
+}*/
   String? verificatId;
   void phone_autho(String number) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
@@ -60,8 +65,29 @@ class UserProvider extends ChangeNotifier {
   void getCurrentUserInfo() async {
     user = auth.currentUser;
     email = user!.email.toString();
-    notifyListeners();
-    print('repeat alot');
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .where("uId", isEqualTo: user!.uid)
+        .get()
+        .then((value) {
+      if (value.docs.isEmpty) {
+        print('errorin getCurrentUserInfo line 74');
+      } else {
+        meAsUser = SocialUserModel.fromJson(value.docs[0].data());
+      }
+    }).catchError((e) {
+      toast(txt: 'is empty $e');
+      print('is empty   $e');
+    });
+
+    meAsUser = SocialUserModel(
+        uId: user!.uid,
+        name: user!.displayName,
+        email: user!.email,
+        phone: user!.phoneNumber);
+
+    print('repeat alot ${++eee}');
     //print(user == null ? 'error' : user!.email.toString());
     toast(txt: user!.email.toString());
   }
@@ -73,6 +99,7 @@ class UserProvider extends ChangeNotifier {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: <String>[
       'email',
+      'https://www.googleapis.com/auth/contacts.readonly'
     ],
   );
 
@@ -91,10 +118,13 @@ class UserProvider extends ChangeNotifier {
       try {
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
-        print(userCredential.user.toString());
+        // print(userCredential.user.toString());
+
         getCurrentUserInfo();
+        adduserdata(
+            email: userCredential.user!.email, uId: userCredential.user!.uid);
         notifyListeners();
-        navigateto(context: context, widget: const HomePage());
+        navigateto(context: context, widget: HomeChat());
       } on FirebaseAuthException catch (e) {
         toast(txt: e.code.toString());
         if (e.code == 'user-not-found') {
@@ -112,25 +142,6 @@ class UserProvider extends ChangeNotifier {
       print('Error signing in with Google: $e');
 
       makemassege(msg: e.toString());
-    }
-  }
-
-  Future<void> google_SignIn2() async {
-    if (FirebaseAuth.instance.currentUser == null) {
-      toast(txt: 'b1');
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      toast(txt: 'b2');
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser!.authentication;
-      toast(txt: 'b3');
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      user =
-          (await FirebaseAuth.instance.signInWithCredential(credential)).user;
-    } else {
-      user = FirebaseAuth.instance.currentUser;
     }
   }
 
@@ -193,7 +204,7 @@ class UserProvider extends ChangeNotifier {
     return null;
   }
 
-  void usersignup(GlobalKey<FormState> formKey) {
+  void usersignup(context, GlobalKey<FormState> formKey) {
     String email = emailcontroller.text;
     String password = passwordcontroller.text;
     if (formKey.currentState!.validate()) {
@@ -202,6 +213,12 @@ class UserProvider extends ChangeNotifier {
           .then((value) {
         print('done');
         toast(txt: value.user!.uid);
+        adduserdata(
+            uId: value.user!.uid,
+            name: usernamecontroller.text,
+            email: value.user!.email,
+            phone: value.user!.phoneNumber);
+        navigateto(context: context, widget: HomeChat());
       }).catchError((e) {
         print(e.toString());
         toast(txt: e.toString(), color: Colors.red);
@@ -211,11 +228,33 @@ class UserProvider extends ChangeNotifier {
   }
 
 //put user data from firebase
-  void userdata({required uid, required name, required email, required phone}) {
+  void adduserdata(
+      {required uId, name = "omar", required email, phone = "01021212121"}) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .where("uId", isEqualTo: uId)
+        .get()
+        .then((value) {
+      if (value.docs.isEmpty) {
+        toast(txt: 'is empty');
+        print('is empty');
+        adduser(uId: uId, name: name, email: email, phone: phone);
+      } else {
+        toast(txt: 'what\'s wrong with you guys');
+      }
+    }).catchError((e) {
+      toast(txt: 'is empty $e');
+      print('is empty   $e');
+    });
+  }
+
+  void adduser({required uId, required name, required email, required phone}) {
     SocialUserModel user1 =
-        SocialUserModel(name: name, uId: uid, email: email, phone: phone);
-    storage.collection('users').doc(uid).set(user1.toMap()).then((value) {
-      toast(txt: 'saved');
+        SocialUserModel(name: name, uId: uId, email: email, phone: phone);
+
+    storage.collection('users').doc(uId).set(user1.toMap()).then((value) {
+      toast(txt: 'Done');
+      notifyListeners();
     }).catchError((e) {
       print(e.toString());
       toast(txt: e.toString(), color: Colors.red).then((value) {
@@ -254,9 +293,9 @@ class UserProvider extends ChangeNotifier {
         print(auth.currentUser.toString());
 
         print('dadddddddddddddddddddddddddddddddd');
-        getCurrentUserInfo();
+        // getCurrentUserInfo();
         notifyListeners();
-        navigateto(context: context, widget: const HomePage());
+        navigateto(context: context, widget: const HomeChat());
       } on FirebaseAuthException catch (e) {
         toast(txt: e.code.toString());
         if (e.code == 'user-not-found') {

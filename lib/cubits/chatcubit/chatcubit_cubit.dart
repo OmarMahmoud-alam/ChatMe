@@ -11,7 +11,7 @@ part 'chatcubit_state.dart';
 class ChatcubitCubit extends Cubit<ChatcubitState> {
   ChatcubitCubit() : super(ChatcubitInitial());
 
-  var _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
   static ChatcubitCubit get(context) => BlocProvider.of(context);
   User? user;
   String? uid;
@@ -66,23 +66,27 @@ class ChatcubitCubit extends Cubit<ChatcubitState> {
       value.docs.forEach((element) {
         if (element.data()['uId'] != uid) {
           allusers.add(SocialUserModel.fromJson(element.data()));
+          emit(SocialGetallUsersuccessState());
         }
       });
-    }).catchError((e) {});
+    }).catchError((e) {
+          emit(SocialGetallUserfailState());
+
+
+    });
   }
 
 //get friends only
 
   List<SocialUserModel> usersfriends = [];
 
-  void setuserFriends(SocialUserModel usermo) {
-    usersfriends = [];
+  void setuserFriends(SocialUserModel frienduser) {
     emit(SocialGetUserFriendsLoadingState());
     FirebaseFirestore.instance
         .collection('users')
         .doc(uid!)
         .collection('friends')
-        .add(usermo.toMap())
+        .add(frienduser.toMap())
         .then((value) {
       //  SocialUserModel.fromJson(element.data());
       emit(SocialGetUserFriendsSucceddState());
@@ -91,66 +95,5 @@ class ChatcubitCubit extends Cubit<ChatcubitState> {
     });
   }
 
-  List<MassageModel> massages = [];
-  void getallmassage(otheruid) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid!)
-        .collection('chats')
-        .doc(otheruid)
-        .collection('messages')
-        .orderBy('datetime')
-        .snapshots()
-        .listen((event) {
-      massages = [];
-      event.docs.forEach((element) {
-        massages.add(MassageModel.fromJson(element.data()));
-      });
 
-      emit(SocialGetMessagesSuccessState());
-    });
-  }
-
-  void sendMessage({
-    required String receiverId,
-    required String dateTime,
-    required String text,
-  }) {
-    MassageModel model = MassageModel(
-      text: text,
-      senduid: uid ?? 'gk',
-      receiveid: receiverId,
-      datetime: dateTime,
-    );
-
-    // set my chats
-
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('chats')
-        .doc(receiverId)
-        .collection('messages')
-        .add(model.toMap())
-        .then((value) {
-      emit(SocialSendMessageSuccessState());
-    }).catchError((error) {
-      emit(SocialSendMessageFailState());
-    });
-
-    // set receiver chats
-
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(receiverId)
-        .collection('chats')
-        .doc(uid)
-        .collection('messages')
-        .add(model.toMap())
-        .then((value) {
-      emit(SocialSendMessageSuccessState());
-    }).catchError((error) {
-      emit(SocialSendMessageFailState());
-    });
-  }
 }

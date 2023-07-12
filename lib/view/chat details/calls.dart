@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project3/controller/signcontroller.dart';
 
 import 'package:project3/styles/styles.dart';
 import 'package:project3/view/chat/personchat.dart';
 import 'package:project3/widget/sharedwidget.dart';
+import 'package:provider/provider.dart';
 
 class CallsWidget extends StatelessWidget {
   const CallsWidget({
@@ -11,6 +14,7 @@ class CallsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return CustomScrollView(
       physics: BouncingScrollPhysics(),
       slivers: [
@@ -31,11 +35,13 @@ class personchatpar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider1 = Provider.of<UserProvider>(context);
+    
     return Column(
       children: [
         InkWell(
           onTap: () {
-            navigateto(context: context, widget: ChatDetails());
+            navigateto(context: context, widget: ChatDetails(user:provider1.meAsUser ,));
           },
           child: Padding(
             padding: const EdgeInsets.all(12.0),

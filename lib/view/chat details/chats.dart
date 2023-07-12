@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project3/cubits/chatcubit/chatcubit_cubit.dart';
+import 'package:project3/module/user.dart';
 
 import 'package:project3/styles/styles.dart';
 import 'package:project3/view/chat/personchat.dart';
@@ -11,81 +14,109 @@ class ChatsWidgets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      physics: BouncingScrollPhysics(),
-      slivers: [
-        SliverToBoxAdapter(
-          child: Container(
-            height: 108.0,
-            width: double.infinity,
-            padding: EdgeInsets.all(15.0),
-            color: Style.messagegrey,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              physics: BouncingScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Column(
-                    children: [
-                      firstelement(),
-                      SizedBox(
-                        width: 56,
-                        child: Text(
-                          'Pin favorite',
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: Style.nametext.copyWith(fontSize: 10),
+    return BlocProvider(
+      create: (context) => ChatcubitCubit()
+        ..getUserData(context)
+        ..getalluser()
+        ..getuserFriends(),
+      child: BlocConsumer<ChatcubitCubit, ChatcubitState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          final blocprovider = BlocProvider.of<ChatcubitCubit>(context);
+
+          return (blocprovider.allusers.isEmpty || blocprovider.user == null)
+              ? const Center(
+                  child: Text('you don\'t have friends add some friends'),
+                )
+              : CustomScrollView(
+                  physics: BouncingScrollPhysics(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Container(
+                        height: 108.0,
+                        width: double.infinity,
+                        padding: EdgeInsets.all(15.0),
+                        color: Style.messagegrey,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          physics: BouncingScrollPhysics(),
+                          itemCount:
+                              ChatcubitCubit.get(context).allusers.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return Column(
+                                children: [
+                                  firstelement(),
+                                  SizedBox(
+                                    width: 56,
+                                    child: Text(
+                                      'Pin favorite',
+                                      textAlign: TextAlign.center,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style:
+                                          Style.nametext.copyWith(fontSize: 10),
+                                    ),
+                                  )
+                                ],
+                              );
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 14.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 56,
+                                      height: 56,
+                                      child: FittedBox(
+                                        child: Image.asset(
+                                            'assets/images/Avatar2.png',
+                                            fit: BoxFit.fill),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                        width: 56,
+                                        child: Text(
+                                          textAlign: TextAlign.center,
+                                          blocprovider
+                                                  .allusers[index - 1].name ??
+                                              'noname',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          style: Style.nametext
+                                              .copyWith(fontSize: 10),
+                                        ))
+                                  ],
+                                ),
+                              );
+                            }
+                          },
                         ),
-                      )
-                    ],
-                  );
-                } else {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 14.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 56,
-                          height: 56,
-                          child: FittedBox(
-                            child: Image.asset('assets/images/Avatar2.png',
-                                fit: BoxFit.fill),
-                          ),
-                        ),
-                        SizedBox(
-                            width: 56,
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              'omar ',
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: Style.nametext.copyWith(fontSize: 10),
-                            ))
-                      ],
+                      ),
                     ),
-                  );
-                }
-              },
-            ),
-          ),
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-            return personchatpar();
-          }, childCount: 10),
-        )
-      ],
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        return personchatpar(
+                            user: blocprovider.allusers[index]);
+                      }, childCount: blocprovider.allusers.length),
+                    )
+                  ],
+                );
+        },
+      ),
     );
   }
 }
 
 class personchatpar extends StatelessWidget {
+  final SocialUserModel user;
   const personchatpar({
     super.key,
+    required this.user,
   });
 
   @override
@@ -94,7 +125,11 @@ class personchatpar extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            navigateto(context: context, widget: ChatDetails());
+            navigateto(
+                context: context,
+                widget: ChatDetails(
+                  user: user,
+                ));
           },
           child: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -115,7 +150,7 @@ class personchatpar extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        'omar mahoud',
+                        user.name ?? 'noname',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Style.nametext,
