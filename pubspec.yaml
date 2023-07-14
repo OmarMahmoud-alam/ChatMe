@@ -46,8 +46,6 @@ dependencies:
   cloud_firestore: ^4.8.2
   google_sign_in: ^6.1.4
   flutter_facebook_auth: ^6.0.0
-  font_awesome_flutter: 
-  twitter_login:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   flutter_bloc: ^8.1.3
