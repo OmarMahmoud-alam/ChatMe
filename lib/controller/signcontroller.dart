@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:project3/module/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project3/view/chat%20details/mainchat.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 import '../widget/sharedwidget.dart';
 
@@ -149,7 +148,6 @@ void met(){
     try {
       await FirebaseAuth.instance.signOut();
       await _googleSignIn.signOut();
-      await FacebookAuth.instance.logOut();
 
       if (auth.currentUser != null) {
         print('omar     tt- ${auth.currentUser!.email.toString()}');
@@ -261,61 +259,6 @@ void met(){
         notifyListeners();
       });
     });
-  }
-
-  Future<void> signInWithFacebook(context) async {
-    // Trigger the sign-in flow
-    await FacebookAuth.instance.logOut();
-
-    try {
-      toast(txt: '1');
-      final FacebookAuth loginResult2 = FacebookAuth.instance;
-      toast(txt: '2');
-
-      final LoginResult loginResult =
-          await loginResult2.login(permissions: ['public_profile']);
-      toast(txt: '3');
-
-      loginResult.accessToken == null
-          ? toast(txt: 'enpty')
-          : toast(txt: 'hasvalue');
-      // Create a credential from the access token
-      final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(loginResult.accessToken!.token);
-      toast(txt: facebookAuthCredential.toString());
-      print(facebookAuthCredential.toString());
-
-      // Once signed in, return the UserCredential
-      try {
-        print(auth.currentUser.toString());
-        final UserCredential userCredential = await FirebaseAuth.instance
-            .signInWithCredential(facebookAuthCredential);
-        print(auth.currentUser.toString());
-
-        print('dadddddddddddddddddddddddddddddddd');
-        // getCurrentUserInfo();
-        notifyListeners();
-        navigateto(context: context, widget: const HomeChat());
-      } on FirebaseAuthException catch (e) {
-        toast(txt: e.code.toString());
-        if (e.code == 'user-not-found') {
-          makemassege(msg: 'userNotFound');
-        } else if (e.code == 'wrong-password') {
-          makemassege(msg: 'wrong password');
-        } else {
-          makemassege(msg: e.toString());
-        }
-      } catch (e) {
-        toast(txt: 'e2');
-
-        makemassege(msg: e.toString());
-      }
-    } catch (e) {
-      toast(txt: 'e1');
-      toast(txt: "${e.toString()}");
-
-      print("error100${e.toString()}");
-    }
   }
 
   String? Password_validation(String s) {

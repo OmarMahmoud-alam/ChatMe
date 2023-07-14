@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project3/cubits/Chatmessage/chatmessage_cubit.dart';
 import 'package:project3/module/messagemodel.dart';
 import 'package:project3/module/user.dart';
+import 'package:project3/view/call/call.dart';
 import 'package:project3/widget/sharedwidget.dart';
 
 class ChatDetails extends StatelessWidget {
@@ -31,7 +32,7 @@ class ChatDetails extends StatelessWidget {
                 },
                 icon: const Icon(Icons.arrow_back),
               ),
-              title: const Row(
+              title: Row(
                 children: [
                   CircleAvatar(
                       radius: 22,
@@ -42,7 +43,7 @@ class ChatDetails extends StatelessWidget {
                     width: 10.0,
                   ),
                   Text(
-                    'omar',
+                    user!.name ?? 'anonaymas',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ],
@@ -51,7 +52,12 @@ class ChatDetails extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                const Icon(Icons.call),
+                IconButton(
+                    onPressed: () {
+                      navigateto(
+                          context: context, widget: CallEndToEnd(user: user!));
+                    },
+                    icon: Icon(Icons.call)),
                 const SizedBox(
                   width: 14,
                 ),
@@ -111,7 +117,8 @@ class ChatDetails extends StatelessWidget {
                                   if (massagecontroller.text.trimLeft() != '') {
                                     blocprovider.sendMessage(
                                         receiverId: user!.uId,
-                                        dateTime: DateTime.now().millisecondsSinceEpoch,
+                                        dateTime: DateTime.now()
+                                            .millisecondsSinceEpoch,
                                         text: massagecontroller.text);
                                     massagecontroller.text = '';
                                   }

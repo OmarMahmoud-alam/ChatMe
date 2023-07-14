@@ -56,4 +56,8 @@ class Style {
 
 class Comman {
   static String knodebox = 'Nodes';
+  static String CALL_COLLECTION = 'call';
+  static const appid = "bce4506496e44fd6966eff0c2ad0d9fc";
+  static const token =
+      "007eJxTYEheu23L67h68dM2DuV9GafzH+mbaAsazDp2dvvJol06dwoUGJKSU01MDcxMLM1STUzSUswszcxS09IMko0SUwxSLNOSfbQ2pDQEMjK8uyjFyMgAgSA+K0NRfn6uIQMDALiMIOg=";
 }

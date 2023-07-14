@@ -4,12 +4,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:project3/module/messagemodel.dart';
 
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 part 'chatmessage_state.dart';
 
 class ChatmessageCubit extends Cubit<ChatmessageState> {
   ChatmessageCubit() : super(ChatmessageInitial());
   final uid = FirebaseAuth.instance.currentUser!.uid;
   List<MassageModel> massages = [];
+
+  // ClientRole? _role = ClientRole.Broadcaster;
+  Future<void> handlecameraandmicro(Permission permission) async {
+    final status = await permission.request();
+    log(status.toString());
+  }
+
   void getallmassage(otheruid) {
     emit(SocialGetMessagesintialState());
 
@@ -32,7 +46,7 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
       massages = [];
       event.docs.forEach((element) {
         var temp = element.data();
-      
+
         massages.add(MassageModel.fromJson(temp));
       });
 

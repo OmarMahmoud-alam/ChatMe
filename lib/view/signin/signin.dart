@@ -196,20 +196,12 @@ class formInput extends StatelessWidget {
                   const SizedBox(
                     width: 7,
                   ),
-                  Center(
-                    child: IconButton(
-                      onPressed: () async {
-                        await provider.signInWithFacebook(context);
-                      },
-                      icon: const Icon(Icons.facebook),
-                    ),
-                  ),
                 ],
               ),
               SizedBox(
                 height: 7,
               ),
-              IconButton(
+              /* IconButton(
                   onPressed: () {
                     /*showDialog(
                       context: context,
@@ -221,7 +213,7 @@ class formInput extends StatelessWidget {
                   icon: Icon(Icons.phone_android)),
               SizedBox(
                 height: 7,
-              ),
+              ),*/
               Center(
                 child: TextButton(
                     onPressed: () {

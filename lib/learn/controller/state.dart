@@ -1,3 +1,0 @@
-class Welcomestate {
-  Welcomestate();
-}
