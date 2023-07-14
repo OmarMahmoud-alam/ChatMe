@@ -196,14 +196,6 @@ class formInput extends StatelessWidget {
                   const SizedBox(
                     width: 7,
                   ),
-                  Center(
-                    child: IconButton(
-                      onPressed: () async {
-                        await provider.signInWithFacebook(context);
-                      },
-                      icon: const Icon(Icons.facebook),
-                    ),
-                  ),
                 ],
               ),
               SizedBox(
