@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
-class bottomba extends StatelessWidget {
-  int _indexbottom = 2;
+class Bottomba extends StatefulWidget {
+  const Bottomba({super.key});
 
-  bottomba({super.key});
+  @override
+  State<Bottomba> createState() => _BottombaState();
+}
+
+class _BottombaState extends State<Bottomba> {
+  int _indexbottom = 2;
 
   void _ontapbottom(int index) {
     _indexbottom = index;
