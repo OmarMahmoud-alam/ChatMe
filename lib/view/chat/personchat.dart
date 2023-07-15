@@ -15,7 +15,9 @@ class ChatDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ChatmessageCubit()..getallmassage(user!.uId),
+      create: (context) => ChatmessageCubit()
+        ..getallmassage(user!.uId)
+        ..getme(),
       child: BlocConsumer<ChatmessageCubit, ChatmessageState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -54,11 +56,16 @@ class ChatDetails extends StatelessWidget {
                 ),
                 IconButton(
                     onPressed: () {
-                      navigateto(
-                          context: context,
-                          widget: CallEndToEnd(
-                            user: user!,
-                          ));
+                      if (blocprovider.caller!.uId.compareTo(user!.uId) != 0 ||
+                          blocprovider.caller != null) {
+                        navigateto(
+                            context: context,
+                            widget: CallEndToEnd(
+                              user: user!,
+                            ));
+                      } else {
+                        toast(txt: 'you can\'t call youself');
+                      }
                     },
                     icon: const Icon(Icons.call)),
                 const SizedBox(

@@ -16,3 +16,9 @@ class SocialGetMessagesintialState extends ChatmessageState {}
 class SocialGetMessagesSuccessState extends ChatmessageState {}
 
 class SocialGetMessagesfailsState extends ChatmessageState {}
+
+class SocialMeintialState extends ChatmessageState {}
+
+class SocialMesuccessState extends ChatmessageState {}
+
+class SocialMeFailState extends ChatmessageState {}

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project3/cubits/Chatmessage/chatmessage_cubit.dart';
@@ -14,19 +16,27 @@ class CallEndToEnd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => ChatmessageCubit(),
+        create: (context) => ChatmessageCubit()..getme(),
         child: BlocConsumer<ChatmessageCubit, ChatmessageState>(
             listener: (context, state) {
           // TODO: implement listener
         }, builder: (context, state) {
-          return ZegoUIKitPrebuiltCall(
-              appID: Comman.appid,
-              appSign: Comman.appSign,
-              callID: ,
-              userID: 'user_${user.uId}',
-              userName: user.name ?? 'Anayomas',
-              plugins: [ZegoUIKitSignalingPlugin()],
-              config: ZegoUIKitPrebuiltCallConfig.groupVideoCall());
+          // sleep(Duration(seconds: 20));
+          print('error');
+          final blocprovider = BlocProvider.of<ChatmessageCubit>(context);
+          print(blocprovider.caller ?? 'me is null');
+          return (blocprovider.caller != null)
+              ? ZegoUIKitPrebuiltCall(
+                  appID: Comman.appid,
+                  appSign: Comman.appSign,
+                  callID: (blocprovider.caller!.uId.compareTo(user.uId) > 0)
+                      ? "${blocprovider.caller!.uId}${user.uId}"
+                      : "${user.uId}${blocprovider.caller!.uId}",
+                  userID: 'user_${user.uId}',
+                  userName: user.name ?? 'Anayomas',
+                  plugins: [ZegoUIKitSignalingPlugin()],
+                  config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall())
+              : CircularProgressIndicator();
         }));
   }
 }
