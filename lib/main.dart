@@ -1,11 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project3/controller/signcontroller.dart';
-import 'package:project3/view/chat%20details/mainchat.dart';
 import 'package:project3/view/signin/emailsign.dart';
 
-import 'package:project3/view/signin/signin.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -32,9 +29,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => UserProvider()),
         ],
         builder: (context, child) {
-          final provide = Provider.of<UserProvider>(context);
+         // final provide = Provider.of<UserProvider>(context);
 
-          return MaterialApp(
+          return const MaterialApp(
             debugShowCheckedModeBanner: false,
             home: email(),
           );

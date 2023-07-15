@@ -98,9 +98,6 @@ class formInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController controlle = TextEditingController();
-    final TextEditingController controlle2 = TextEditingController();
-
     /*AlertDialog alert2 = AlertDialog(
       title: Text("My title"),
       content: Text("enter the sms"),
@@ -198,7 +195,7 @@ class formInput extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 7,
               ),
               IconButton(
@@ -210,8 +207,8 @@ class formInput extends StatelessWidget {
                       },
                     );*/
                   },
-                  icon: Icon(Icons.phone_android)),
-              SizedBox(
+                  icon: const Icon(Icons.phone_android)),
+              const SizedBox(
                 height: 7,
               ),
               Center(

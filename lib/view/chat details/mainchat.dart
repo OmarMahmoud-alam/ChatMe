@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project3/cubits/pagecubit/pagescubit_cubit.dart';
 
 import 'package:project3/styles/styles.dart';
-import 'package:project3/view/chat%20details/chats.dart';
 
 class HomeChat extends StatelessWidget {
   const HomeChat({super.key});

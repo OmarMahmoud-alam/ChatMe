@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project3/cubits/Chatmessage/chatmessage_cubit.dart';
 import 'package:project3/module/messagemodel.dart';
 import 'package:project3/module/user.dart';
+import 'package:project3/view/call/callpage.dart';
 import 'package:project3/widget/sharedwidget.dart';
 
 class ChatDetails extends StatelessWidget {
@@ -51,7 +52,15 @@ class ChatDetails extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                const Icon(Icons.call),
+                IconButton(
+                    onPressed: () {
+                      navigateto(
+                          context: context,
+                          widget: CallEndToEnd(
+                            user: user!,
+                          ));
+                    },
+                    icon: const Icon(Icons.call)),
                 const SizedBox(
                   width: 14,
                 ),
@@ -69,10 +78,11 @@ class ChatDetails extends StatelessWidget {
                         itemBuilder: (context, index) {
                           MassageModel tempmassage =
                               blocprovider.massages[index];
-                          if (tempmassage.senduid == user!.uId)
+                          if (tempmassage.senduid == user!.uId) {
                             return othermassage(
                               text: tempmassage.text,
                             );
+                          }
                           return mymassage(text: tempmassage.text);
                         },
                         separatorBuilder: (context, index) => Container(),
@@ -82,7 +92,7 @@ class ChatDetails extends StatelessWidget {
 
                 Padding(
                   padding: const EdgeInsets.all(18.0),
-                  child: Container(
+                  child: SizedBox(
                     height: 55,
                     child: Row(
                       children: [
@@ -94,8 +104,9 @@ class ChatDetails extends StatelessWidget {
                             validate: (String? s) {
                               if (s == null || s == '') {
                                 return 'must enter value';
-                              } else
+                              } else {
                                 return null;
+                              }
                             },
                           ),
                         ),
@@ -111,7 +122,8 @@ class ChatDetails extends StatelessWidget {
                                   if (massagecontroller.text.trimLeft() != '') {
                                     blocprovider.sendMessage(
                                         receiverId: user!.uId,
-                                        dateTime: DateTime.now().millisecondsSinceEpoch,
+                                        dateTime: DateTime.now()
+                                            .millisecondsSinceEpoch,
                                         text: massagecontroller.text);
                                     massagecontroller.text = '';
                                   }
@@ -198,10 +210,10 @@ class othermassage extends StatelessWidget {
       child: Padding(
           padding: const EdgeInsets.only(top: 25, left: 20.0),
           child: Container(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(0.6),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(10.0),
                     bottomRight: Radius.circular(10.0),
                     topLeft: Radius.circular(10.0))),

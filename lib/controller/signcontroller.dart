@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,12 +32,12 @@ void met(){
   (fromFirestore: , toFirestore: toFirestore);
 }*/
   String? verificatId;
-  void phone_autho(String number) async {
+  /*void phone_autho(String number) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '${number}',
+      phoneNumber: number,
       verificationCompleted: (PhoneAuthCredential credential) {},
       verificationFailed: (FirebaseAuthException e) {
-        print("the error is");
+        log("the error is");
       },
       codeSent: (String verificationId, int? resendToken) async {
         verificatId = verificationId;
@@ -43,7 +45,7 @@ void met(){
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
-
+*/
   void sendcode(String smsCode) async {
     // Create a PhoneAuthCredential with the code
     toast(txt: '1');
@@ -57,7 +59,7 @@ void met(){
       });
     } catch (e) {
       toast(txt: e.toString());
-      print(e.toString());
+      log(e.toString());
     }
   }
 
@@ -71,13 +73,13 @@ void met(){
         .get()
         .then((value) {
       if (value.docs.isEmpty) {
-        print('errorin getCurrentUserInfo line 74');
+        log('errorin getCurrentUserInfo line 74');
       } else {
         meAsUser = SocialUserModel.fromJson(value.docs[0].data());
       }
     }).catchError((e) {
       toast(txt: 'is empty $e');
-      print('is empty   $e');
+      log('is empty   $e');
     });
 
     meAsUser = SocialUserModel(
@@ -86,8 +88,8 @@ void met(){
         email: user!.email,
         phone: user!.phoneNumber);
 
-    print('repeat alot ${++eee}');
-    //print(user == null ? 'error' : user!.email.toString());
+    //log('repeat alot ${++eee}');
+    //log(user == null ? 'error' : user!.email.toString());
     toast(txt: user!.email.toString());
   }
 
@@ -117,13 +119,13 @@ void met(){
       try {
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
-        // print(userCredential.user.toString());
+        // log(userCredential.user.toString());
 
         getCurrentUserInfo();
         adduserdata(
             email: userCredential.user!.email, uId: userCredential.user!.uid);
         notifyListeners();
-        navigateto(context: context, widget: HomeChat());
+        navigateto(context: context, widget: const HomeChat());
       } on FirebaseAuthException catch (e) {
         toast(txt: e.code.toString());
         if (e.code == 'user-not-found') {
@@ -136,9 +138,9 @@ void met(){
       } catch (e) {
         makemassege(msg: e.toString());
       }
-      print('Signed in as ${user!.displayName} (${user!.uid})');
+      log('Signed in as ${user!.displayName} (${user!.uid})');
     } catch (e) {
-      print('Error signing in with Google: $e');
+      log('Error signing in with Google: $e');
 
       makemassege(msg: e.toString());
     }
@@ -150,13 +152,13 @@ void met(){
       await _googleSignIn.signOut();
 
       if (auth.currentUser != null) {
-        print('omar     tt- ${auth.currentUser!.email.toString()}');
+        log('omar     tt- ${auth.currentUser!.email.toString()}');
       }
       clearUser();
       // Navigate to the sign in page after successful sign out
     } catch (e) {
       // Handle sign out errors, if any
-      print('Error signing out: $e');
+      log('Error signing out: $e');
     }
   }
 
@@ -170,7 +172,7 @@ void met(){
           email: emailcontroller.text,
           password: passwordcontroller.text,
         );
-        print(userCredential.user!.uid);
+        log(userCredential.user!.uid);
         getCurrentUserInfo();
         notifyListeners();
         makemassege(msg: 'done');
@@ -209,16 +211,16 @@ void met(){
       FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) {
-        print('done');
+        log('done');
         toast(txt: value.user!.uid);
         adduserdata(
             uId: value.user!.uid,
             name: usernamecontroller.text,
             email: value.user!.email,
             phone: value.user!.phoneNumber);
-        navigateto(context: context, widget: HomeChat());
+        navigateto(context: context, widget: const HomeChat());
       }).catchError((e) {
-        print(e.toString());
+        log(e.toString());
         toast(txt: e.toString(), color: Colors.red);
       });
       notifyListeners();
@@ -234,15 +236,14 @@ void met(){
         .get()
         .then((value) {
       if (value.docs.isEmpty) {
-        toast(txt: 'is empty');
-        print('is empty');
+        //toast(txt: 'is empty');
+        log('is empty');
         adduser(uId: uId, name: name, email: email, phone: phone);
-      } else {
-        toast(txt: 'what\'s wrong with you guys');
-      }
+      } 
+      
     }).catchError((e) {
       toast(txt: 'is empty $e');
-      print('is empty   $e');
+      log('is empty   $e');
     });
   }
 
@@ -251,19 +252,19 @@ void met(){
         SocialUserModel(name: name, uId: uId, email: email, phone: phone);
 
     storage.collection('users').doc(uId).set(user1.toMap()).then((value) {
-      toast(txt: 'Done');
+   //   toast(txt: 'Done');
       notifyListeners();
     }).catchError((e) {
-      print(e.toString());
-      toast(txt: e.toString(), color: Colors.red).then((value) {
-        notifyListeners();
+     // log(e.toString());
+     toast(txt: e.toString(), color: Colors.red).then((value) {
+        //notifyListeners();
       });
     });
   }
 
     String? Password_validation(String s) {
-    RegExp passvalid =
-        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+    /*RegExp passvalid =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');*/
     if (s.length < 5) {
       return 'something is wrong in password pls check again';
     }
@@ -287,16 +288,14 @@ void met(){
     RegExp emailValid = RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
-    RegExp passvalid =
-        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
 
     if (emailValid.hasMatch(email) && password.length > 4) {
       FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) {
-        print(value.user!.uid);
+       // log(value.user!.uid);
       }).catchError((e) {
-        print(e.toString());
+        log(e.toString());
       });
     } else {
       makemassege(msg: "something wrong in password or name");

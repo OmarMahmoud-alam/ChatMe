@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'web_H.dart';
 //import '../colab/cubit.dart';
 class DefaultButton extends StatelessWidget {
-  DefaultButton({
+  const DefaultButton({
     super.key,
     this.width = double.infinity,
     this.background = Colors.blue,
@@ -14,12 +14,12 @@ class DefaultButton extends StatelessWidget {
     required this.function,
     required this.text,
   });
-  late double width;
-  late Color background;
-  late bool isUpperCase;
-  late double radius;
-  VoidCallback function;
-  String text;
+  final double width;
+  final Color background;
+  final bool isUpperCase;
+  final double radius;
+  final VoidCallback function;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -48,22 +48,22 @@ class DefaultButton extends StatelessWidget {
 }
 
 class defaultFormField extends StatelessWidget {
-  late TextEditingController controller;
-  late TextInputType type;
-  ValueChanged<String>? onSubmit;
-  late InputBorder border;
-  ValueChanged<String>? onChange;
-  GestureTapCallback? onTap;
-  bool isPassword;
-  late FormFieldValidator<String> validate;
-  String? label;
-  String? hint;
-  IconData? prefix;
-  IconData? suffix;
-  Function? suffixPressed;
-  late bool isClickable;
+  final TextEditingController controller;
+  final TextInputType type;
+  final ValueChanged<String>? onSubmit;
+  final InputBorder border;
+   final ValueChanged<String>? onChange;
+  final GestureTapCallback? onTap;
+  final bool isPassword;
+  final  FormFieldValidator<String> validate;
+  final String? label;
+  final String? hint;
+  final IconData? prefix;
+  final IconData? suffix;
+  final Function? suffixPressed;
+  final bool isClickable;
   final Color? fillcolor;
-  defaultFormField({
+  const defaultFormField({
     super.key,
     required this.controller,
     this.fillcolor,

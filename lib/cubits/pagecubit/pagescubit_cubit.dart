@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:project3/view/chat%20details/calls.dart';
 import 'package:project3/view/chat%20details/chats.dart';
 import 'package:project3/view/chat%20details/search.dart';
@@ -11,37 +10,37 @@ part 'pagescubit_state.dart';
 class PagescubitCubit extends Cubit<PagescubitState> {
   int pageindex = 0;
   List<Widget> bodies = [
-    ChatsWidgets(),
-    CallsWidget(),
+    const ChatsWidgets(),
+    const CallsWidget(),
     SearchWidgets(),
-    Settingapp()
+    const Settingapp()
   ];
   List<String> title = ['Chats', 'calls', 'Search page', 'setting'];
   List<List<Widget>> actions = [
     [
-      Icon(
+      const Icon(
         Icons.chat_bubble_outline_sharp,
         color: Colors.black,
       ),
-      SizedBox(
+      const SizedBox(
         width: 10,
       ),
-      Icon(
+      const Icon(
         Icons.notifications_outlined,
         color: Colors.black,
       ),
-      SizedBox(
+      const SizedBox(
         width: 10,
       ),
     ],
     [
-      Icon(
+      const Icon(
         Icons.three_k,
         color: Colors.black,
       )
     ],
     [
-      Icon(
+      const Icon(
         Icons.delete,
         color: Colors.black,
       )

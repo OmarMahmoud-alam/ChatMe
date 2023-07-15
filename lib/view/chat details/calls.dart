@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project3/controller/signcontroller.dart';
 
@@ -16,11 +15,11 @@ class CallsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return CustomScrollView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       slivers: [
         SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
-            return personchatpar();
+            return const personchatpar();
           }, childCount: 10),
         )
       ],
@@ -50,13 +49,13 @@ class personchatpar extends StatelessWidget {
               width: double.infinity,
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 56,
                     height: 56,
                     child: Image.asset('assets/images/Avatar2.png',
                         fit: BoxFit.fill),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Column(
@@ -67,12 +66,12 @@ class personchatpar extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Style.nametext,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.call_received,
                             color: Colors.red,
                           ),
@@ -86,17 +85,17 @@ class personchatpar extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                     Icons.call_made,
                     color: Colors.blueAccent,
                   ),
                   onPressed: (){},),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                 ],
@@ -108,7 +107,7 @@ class personchatpar extends StatelessWidget {
           width: double.infinity,
           height: 0.2,
           color: Style.bordercolor,
-          margin: EdgeInsets.only(left: 70),
+          margin: const EdgeInsets.only(left: 70),
         )
       ],
     );

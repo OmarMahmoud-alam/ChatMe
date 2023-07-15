@@ -1,9 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:project3/module/messagemodel.dart';
 import 'package:project3/module/user.dart';
 
 part 'chatcubit_state.dart';
@@ -50,11 +48,11 @@ class ChatcubitCubit extends Cubit<ChatcubitState> {
         .collection('friends')
         .get()
         .then((value) {
-      value.docs.forEach((element) {
+      for (var element in value.docs) {
         if (element.data()['uId'] != uid) {
           usersfriends.add(SocialUserModel.fromJson(element.data()));
         }
-      });
+      }
     }).catchError((e) {});
   }
 
@@ -63,12 +61,12 @@ class ChatcubitCubit extends Cubit<ChatcubitState> {
     allusers = [];
     emit(SocialGetallUserLoadingState());
     FirebaseFirestore.instance.collection('users').get().then((value) {
-      value.docs.forEach((element) {
+      for (var element in value.docs) {
         if (element.data()['uId'] != uid) {
           allusers.add(SocialUserModel.fromJson(element.data()));
           emit(SocialGetallUsersuccessState());
         }
-      });
+      }
     }).catchError((e) {
           emit(SocialGetallUserfailState());
 

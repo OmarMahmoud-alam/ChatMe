@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:project3/controller/signcontroller.dart';
 
 import 'package:project3/styles/styles.dart';
 import 'package:project3/view/chat/personchat.dart';
 import 'package:project3/widget/sharedwidget.dart';
-import 'package:project3/widget/widgets.dart';
 import 'package:provider/provider.dart';
 
 class SearchWidgets extends StatelessWidget {
@@ -18,7 +16,7 @@ class SearchWidgets extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return CustomScrollView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       slivers: [
         SliverAppBar(
           backgroundColor: Colors.white,
@@ -41,13 +39,15 @@ class SearchWidgets extends StatelessWidget {
               prefix: Icons.search,
               controller: searchcontroller,
               type: TextInputType.text,
-              validate: (String? value) {},
+              validate: (String? value) {
+                return null;
+              },
             ),
           ),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
-            return personchatpar();
+            return const personchatpar();
           }, childCount: 10),
         )
       ],
@@ -77,13 +77,13 @@ class personchatpar extends StatelessWidget {
               width: double.infinity,
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 56,
                     height: 56,
                     child: Image.asset('assets/images/Avatar2.png',
                         fit: BoxFit.fill),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Column(
@@ -94,7 +94,7 @@ class personchatpar extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Style.nametext,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
@@ -105,10 +105,10 @@ class personchatpar extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Column(
                     children: [
                       Text(
@@ -117,10 +117,10 @@ class personchatpar extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Style.nametext,
                       ),
-                      Spacer()
+                      const Spacer()
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                 ],
@@ -132,7 +132,7 @@ class personchatpar extends StatelessWidget {
           width: double.infinity,
           height: 0.2,
           color: Style.bordercolor,
-          margin: EdgeInsets.only(left: 70),
+          margin: const EdgeInsets.only(left: 70),
         )
       ],
     );

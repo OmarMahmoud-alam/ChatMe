@@ -30,11 +30,11 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
       }
 
       massages = [];
-      event.docs.forEach((element) {
+      for (var element in event.docs) {
         var temp = element.data();
       
         massages.add(MassageModel.fromJson(temp));
-      });
+      }
 
       emit(SocialGetMessagesSuccessState());
     });

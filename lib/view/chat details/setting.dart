@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project3/controller/signcontroller.dart';
 import 'package:project3/view/signin/emailsign.dart';
 import 'package:project3/widget/sharedwidget.dart';
 import 'package:provider/provider.dart';
 
 class Settingapp extends StatelessWidget {
+  const Settingapp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Container(
+          SizedBox(
             height: 420,
             child: Stack(
               children: [
@@ -26,10 +26,10 @@ class Settingapp extends StatelessWidget {
                               image: AssetImage('assets/images/Avatar2.png'),
                               fit: BoxFit.cover)),
                     )),
-                Align(
+                const Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 30.0, left: 17.0),
+                    padding: EdgeInsets.only(top: 30.0, left: 17.0),
                     child: Icon(Icons.arrow_back_ios, size: 30.0),
                   ),
                 ),
@@ -39,7 +39,7 @@ class Settingapp extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 20.0),
                     child: InkWell(
                       onTap: () {},
-                      child: CircleAvatar(
+                      child: const CircleAvatar(
                           radius: 30,
                           backgroundColor: Colors.blue,
                           child: Icon(
@@ -52,7 +52,7 @@ class Settingapp extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10.0,
           ),
           Card(
@@ -65,9 +65,9 @@ class Settingapp extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Account information',
+                      const Text('Account information',
                           style: TextStyle(color: Colors.blue)),
-                      SizedBox(
+                      const SizedBox(
                         height: 15.0,
                       ),
                       InkWell(
@@ -88,7 +88,7 @@ class Settingapp extends StatelessWidget {
                                       );
                                   */
                         },
-                        child: Column(
+                        child: const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -98,7 +98,7 @@ class Settingapp extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15.0,
                       ),
                       InkWell(
@@ -110,7 +110,7 @@ class Settingapp extends StatelessWidget {
                                                   .userModel!
                                                   .phone));*/
                         },
-                        child: Column(
+                        child: const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("No phone"),
@@ -120,7 +120,7 @@ class Settingapp extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15.0,
                       ),
                       InkWell(
@@ -131,7 +131,7 @@ class Settingapp extends StatelessWidget {
                                               .userModel!
                                               .bio));*/
                         },
-                        child: Column(
+                        child: const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Bio'),
@@ -155,14 +155,14 @@ class Settingapp extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Account information',
+                      const Text('Account information',
                           style: TextStyle(color: Colors.blue)),
-                      SizedBox(
+                      const SizedBox(
                         height: 15.0,
                       ),
                       InkWell(
                         onTap: () {},
-                        child: Row(
+                        child: const Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(Icons.notification_add),
@@ -170,12 +170,12 @@ class Settingapp extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15.0,
                       ),
                       InkWell(
                         onTap: () {},
-                        child: Row(
+                        child: const Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(Icons.lock),
@@ -183,14 +183,14 @@ class Settingapp extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15.0,
                       ),
                       InkWell(
                         onTap: () {
                           print('test');
                         },
-                        child: Row(
+                        child: const Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(Icons.chat_bubble),
@@ -202,7 +202,7 @@ class Settingapp extends StatelessWidget {
                   )),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Padding(

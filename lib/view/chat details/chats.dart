@@ -31,24 +31,24 @@ class ChatsWidgets extends StatelessWidget {
                   child: Text('you don\'t have friends add some friends'),
                 )
               : CustomScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   slivers: [
                     SliverToBoxAdapter(
                       child: Container(
                         height: 108.0,
                         width: double.infinity,
-                        padding: EdgeInsets.all(15.0),
+                        padding: const EdgeInsets.all(15.0),
                         color: Style.messagegrey,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          physics: BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           itemCount:
                               ChatcubitCubit.get(context).allusers.length + 1,
                           itemBuilder: (context, index) {
                             if (index == 0) {
                               return Column(
                                 children: [
-                                  firstelement(),
+                                  const firstelement(),
                                   SizedBox(
                                     width: 56,
                                     child: Text(
@@ -69,7 +69,7 @@ class ChatsWidgets extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: 56,
                                       height: 56,
                                       child: FittedBox(
@@ -138,13 +138,13 @@ class personchatpar extends StatelessWidget {
               width: double.infinity,
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 56,
                     height: 56,
                     child: Image.asset('assets/images/Avatar2.png',
                         fit: BoxFit.fill),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Column(
@@ -155,7 +155,7 @@ class personchatpar extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Style.nametext,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
@@ -166,10 +166,10 @@ class personchatpar extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Column(
                     children: [
                       Text(
@@ -178,10 +178,10 @@ class personchatpar extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Style.nametext,
                       ),
-                      Spacer()
+                      const Spacer()
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                 ],
@@ -193,7 +193,7 @@ class personchatpar extends StatelessWidget {
           width: double.infinity,
           height: 0.2,
           color: Style.bordercolor,
-          margin: EdgeInsets.only(left: 70),
+          margin: const EdgeInsets.only(left: 70),
         )
       ],
     );
