@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project3/cubits/Chatmessage/chatmessage_cubit.dart';
@@ -5,6 +6,8 @@ import 'package:project3/module/messagemodel.dart';
 import 'package:project3/module/user.dart';
 import 'package:project3/view/call/callpage.dart';
 import 'package:project3/widget/sharedwidget.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
 class ChatDetails extends StatelessWidget {
   final TextEditingController massagecontroller = TextEditingController();
@@ -52,7 +55,8 @@ class ChatDetails extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                IconButton(
+                sendCallButton(isVideoCall: false, uid: user!.uId),
+                /* IconButton(
                     onPressed: () {
                       navigateto(
                           context: context,
@@ -60,10 +64,8 @@ class ChatDetails extends StatelessWidget {
                             user: user!,
                           ));
                     },
-                    icon: const Icon(Icons.call)),
-                const SizedBox(
-                  width: 14,
-                ),
+                    icon: const Icon(Icons.call)),*/
+
                 const Icon(Icons.three_p_rounded),
                 const SizedBox(
                   width: 20,
@@ -142,33 +144,6 @@ class ChatDetails extends StatelessWidget {
   }
 }
 
-class OtherMassage extends StatelessWidget {
-  final String text;
-  const OtherMassage({
-    required this.text,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: AlignmentDirectional.centerStart,
-      child: Padding(
-          padding: const EdgeInsets.only(top: 25, left: 20.0),
-          child: Container(
-            padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.6),
-                borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(10.0),
-                    bottomRight: Radius.circular(10.0),
-                    topLeft: Radius.circular(10.0))),
-            child: Text(text),
-          )),
-    );
-  }
-}
-
 class mymassage extends StatelessWidget {
   final String text;
   const mymassage({
@@ -222,3 +197,71 @@ class othermassage extends StatelessWidget {
     );
   }
 }
+
+Widget sendCallButton({
+  required bool isVideoCall,
+  required String uid,
+  void Function(String code, String message, List<String>)? onCallFinished,
+}) {
+  final invitees = getInvitesFromTextCtrl(uid);
+
+  return ZegoSendCallInvitationButton(
+    icon: ButtonIcon(
+        icon:
+            isVideoCall ? const Icon(Icons.videocam) : const Icon(Icons.phone),
+        backgroundColor: Colors.blue),
+    isVideoCall: isVideoCall,
+    invitees: invitees,
+    resourceID: 'zego_data',
+    iconSize: const Size(40, 40),
+    buttonSize: const Size(50, 50),
+    onPressed: onCallFinished,
+  );
+}
+
+List<ZegoUIKitUser> getInvitesFromTextCtrl(String textCtrlText) {
+  final invitees = <ZegoUIKitUser>[];
+
+  final inviteeIDs = textCtrlText.trim().replaceAll('，', '');
+  inviteeIDs.split(',').forEach((inviteeUserID) {
+    if (inviteeUserID.isEmpty) {
+      return;
+    }
+
+    invitees.add(ZegoUIKitUser(
+      id: inviteeUserID,
+      name: 'user_$inviteeUserID',
+    ));
+  });
+
+  return invitees;
+}
+
+
+/*
+ZegoSendCallInvitationButton actionButton(
+        bool isVideo, SocialUserModel user, context) =>
+    ZegoSendCallInvitationButton(
+      text: "",
+      icon: ButtonIcon(
+          icon: isVideo ? const Icon(Icons.videocam) : const Icon(Icons.phone),
+          backgroundColor: Colors.blue),
+      clickableBackgroundColor: Colors.transparent,
+      iconSize: const Size.square(50.0),
+      onPressed: (s1, s2, arrs3) {
+        navigateto(
+            context: context,
+            widget: CallEndToEnd(
+              user: user,
+            ));
+      },
+      isVideoCall: isVideo,
+      resourceID: "zegouikit_call",
+      invitees: [
+        ZegoUIKitUser(
+          id: user.uId,
+          name: user.name ?? 'anayomis',
+        ),
+      ],
+    );
+*/

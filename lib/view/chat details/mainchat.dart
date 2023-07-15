@@ -26,7 +26,7 @@ class HomeChat extends StatelessWidget {
               actions: blocprovider.actions[blocprovider.pageindex],
             ),
             body: blocprovider.bodies[blocprovider.pageindex],
-            bottomNavigationBar: BottomNavigationBar(
+                bottomNavigationBar: BottomNavigationBar(
               backgroundColor: Colors.white,
               currentIndex: blocprovider.pageindex,
               type: BottomNavigationBarType.fixed,
@@ -59,6 +59,7 @@ class HomeChat extends StatelessWidget {
                 ),
               ],
             ),
+        
           );
         },
       ),

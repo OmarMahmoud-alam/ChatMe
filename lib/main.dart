@@ -4,6 +4,8 @@ import 'package:project3/controller/signcontroller.dart';
 import 'package:project3/view/signin/emailsign.dart';
 
 import 'package:provider/provider.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
 import 'firebase_options.dart';
 
@@ -12,8 +14,18 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // final navigatorKey = GlobalKey<NavigatorState>();
 
-  runApp(const MyApp());
+  /// 2/5: set navigator key to ZegoUIKitPrebuiltCallInvitationService
+  // ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
+
+  ZegoUIKit().initLog().then((value) {
+    ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI(
+      [ZegoUIKitSignalingPlugin()],
+    );
+
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -23,17 +35,37 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        //ChangeNotifierProvider(                 //we use that if one provider
-        //create: (context) => CounterModel(),
         providers: [
           ChangeNotifierProvider(create: (context) => UserProvider()),
         ],
         builder: (context, child) {
-         // final provide = Provider.of<UserProvider>(context);
+          // final provide = Provider.of<UserProvider>(context);
 
           return const MaterialApp(
+            // navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
-            home: email(),
+
+            /*  builder: (BuildContext context, Widget? child) {
+              return Stack(
+                children: [
+                  child ??
+                      Container(
+                        color: Colors.red,
+                        width: 100,
+                        height: 100,
+                      ),
+                  email(),
+
+                  /// support minimizing
+                  /* ZegoUIKitPrebuiltCallMiniOverlayPage(
+                    contextQuery: () {
+                      return navigatorKey.currentState!.context;
+                    },
+                  ),*/
+                ],
+              );
+            },*/
+            home: const email(),
           );
         });
   }

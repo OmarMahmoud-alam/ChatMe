@@ -3,12 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:project3/module/messagemodel.dart';
+import 'package:project3/module/user.dart';
 
 part 'chatmessage_state.dart';
 
 class ChatmessageCubit extends Cubit<ChatmessageState> {
   ChatmessageCubit() : super(ChatmessageInitial());
   final uid = FirebaseAuth.instance.currentUser!.uid;
+  SocialUserModel? user;
   List<MassageModel> massages = [];
   void getallmassage(otheruid) {
     emit(SocialGetMessagesintialState());
@@ -32,12 +34,20 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
       massages = [];
       for (var element in event.docs) {
         var temp = element.data();
-      
+
         massages.add(MassageModel.fromJson(temp));
       }
 
       emit(SocialGetMessagesSuccessState());
     });
+  }
+
+  void getme() {
+    emit(SocialGetMessagesintialState());
+    final user = FirebaseFirestore.instance
+        .collection('users')
+        .where('uId', isEqualTo: uid.toString())
+        .snapshots();
   }
 
   void sendMessage({

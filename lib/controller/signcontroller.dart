@@ -4,9 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:project3/controller/zegoconfig.dart';
 import 'package:project3/module/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project3/view/chat%20details/mainchat.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 import '../widget/sharedwidget.dart';
 
@@ -22,46 +24,7 @@ class UserProvider extends ChangeNotifier {
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController passwordcontroller2 = TextEditingController();
 
-  /*void setUser(User user) {
-    _user = user;
-    notifyListeners();
-  }
-
-void met(){
-  db.collection("users").where("id", isNotEqualTo: user!.uid).withConverter
-  (fromFirestore: , toFirestore: toFirestore);
-}*/
-  String? verificatId;
-  /*void phone_autho(String number) async {
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: number,
-      verificationCompleted: (PhoneAuthCredential credential) {},
-      verificationFailed: (FirebaseAuthException e) {
-        log("the error is");
-      },
-      codeSent: (String verificationId, int? resendToken) async {
-        verificatId = verificationId;
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
-  }
-*/
-  void sendcode(String smsCode) async {
-    // Create a PhoneAuthCredential with the code
-    toast(txt: '1');
-    try {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verificatId!, smsCode: smsCode);
-
-      // Sign the user in (or link) with the credential
-      await auth.signInWithCredential(credential).then((value) {
-        toast(txt: 'sign in success');
-      });
-    } catch (e) {
-      toast(txt: e.toString());
-      log(e.toString());
-    }
-  }
+  ZegoUIKitPrebuiltCallController? callController;
 
   void getCurrentUserInfo() async {
     user = auth.currentUser;
@@ -88,12 +51,13 @@ void met(){
         email: user!.email,
         phone: user!.phoneNumber);
 
+    onUserLogin(meAsUser!);
     //log('repeat alot ${++eee}');
     //log(user == null ? 'error' : user!.email.toString());
-    toast(txt: user!.email.toString());
+    //toast(txt: user!.email.toString());
   }
 
-  late final idToken;
+  //late final idToken;
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore storage = FirebaseFirestore.instance;
@@ -239,8 +203,7 @@ void met(){
         //toast(txt: 'is empty');
         log('is empty');
         adduser(uId: uId, name: name, email: email, phone: phone);
-      } 
-      
+      }
     }).catchError((e) {
       toast(txt: 'is empty $e');
       log('is empty   $e');
@@ -252,17 +215,17 @@ void met(){
         SocialUserModel(name: name, uId: uId, email: email, phone: phone);
 
     storage.collection('users').doc(uId).set(user1.toMap()).then((value) {
-   //   toast(txt: 'Done');
+      //   toast(txt: 'Done');
       notifyListeners();
     }).catchError((e) {
-     // log(e.toString());
-     toast(txt: e.toString(), color: Colors.red).then((value) {
+      // log(e.toString());
+      toast(txt: e.toString(), color: Colors.red).then((value) {
         //notifyListeners();
       });
     });
   }
 
-    String? Password_validation(String s) {
+  String? Password_validation(String s) {
     /*RegExp passvalid =
         RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');*/
     if (s.length < 5) {
@@ -288,12 +251,11 @@ void met(){
     RegExp emailValid = RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
-
     if (emailValid.hasMatch(email) && password.length > 4) {
       FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) {
-       // log(value.user!.uid);
+        // log(value.user!.uid);
       }).catchError((e) {
         log(e.toString());
       });
@@ -313,3 +275,45 @@ void met(){
         fontSize: 16.0);
   }
 }
+
+  /*void setUser(User user) {
+    _user = user;
+    notifyListeners();
+  }
+
+void met(){
+  db.collection("users").where("id", isNotEqualTo: user!.uid).withConverter
+  (fromFirestore: , toFirestore: toFirestore);
+}*/
+//  String? verificatId;
+  /*void phone_autho(String number) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: number,
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {
+        log("the error is");
+      },
+      codeSent: (String verificationId, int? resendToken) async {
+        verificatId = verificationId;
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+*/
+  /*void sendcode(String smsCode) async {
+    // Create a PhoneAuthCredential with the code
+    toast(txt: '1');
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificatId!, smsCode: smsCode);
+
+      // Sign the user in (or link) with the credential
+      await auth.signInWithCredential(credential).then((value) {
+        toast(txt: 'sign in success');
+      });
+    } catch (e) {
+      toast(txt: e.toString());
+      log(e.toString());
+    }
+  }
+*/
