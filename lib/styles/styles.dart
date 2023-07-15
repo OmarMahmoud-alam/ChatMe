@@ -56,4 +56,6 @@ class Style {
 
 class Comman {
   static String knodebox = 'Nodes';
+  static int appid=1046346516;
+  static String appSign= '6073a55b1ebaaddeac45a4823d65231e461d6c1a4d6b0e6d3415d95c121630b7';
 }
