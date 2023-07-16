@@ -43,7 +43,7 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
     });
   }
 
-  void sendMessage({
+  void sendTextMessage({
     required String receiverId,
     required int dateTime,
     required String text,
@@ -53,6 +53,7 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
       senduid: uid,
       receiveid: receiverId,
       datetime: dateTime,
+      type: 'Message',
     );
 
     // set my chats

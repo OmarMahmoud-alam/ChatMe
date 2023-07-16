@@ -6,6 +6,8 @@ import 'package:project3/view/signin/emailsign.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,12 +15,29 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  final navigatorKey = GlobalKey<NavigatorState>();
+
+  /// 1.1.2: set navigator key to ZegoUIKitPrebuiltCallInvitationService
+  ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
+
+  ZegoUIKit().initLog().then((value) {
+    ///  Call the `useSystemCallingUI` method
+    ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI(
+      [ZegoUIKitSignalingPlugin()],
+    );
+
+    runApp(MyApp(navigatorKey: navigatorKey));
+  });
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key, required this.navigatorKey});
+  final GlobalKey<NavigatorState> navigatorKey;
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -29,9 +48,10 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => UserProvider()),
         ],
         builder: (context, child) {
-         // final provide = Provider.of<UserProvider>(context);
+          // final provide = Provider.of<UserProvider>(context);
 
-          return const MaterialApp(
+          return MaterialApp(
+            navigatorKey: widget.navigatorKey,
             debugShowCheckedModeBanner: false,
             home: email(),
           );

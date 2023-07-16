@@ -9,11 +9,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:project3/main.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    final navigatorKey = GlobalKey<NavigatorState>();
+
+    /// 1.1.2: set navigator key to ZegoUIKitPrebuiltCallInvitationService
+    ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
+
+    runApp(MyApp(navigatorKey: navigatorKey));
+    await tester.pumpWidget( MyApp(
+      navigatorKey: navigatorKey,
+    ));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

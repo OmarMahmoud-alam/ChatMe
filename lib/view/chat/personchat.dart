@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project3/cubits/Chatmessage/chatmessage_cubit.dart';
 import 'package:project3/module/messagemodel.dart';
 import 'package:project3/module/user.dart';
+import 'package:project3/view/call/callbutton.dart';
 import 'package:project3/view/call/callpage.dart';
 import 'package:project3/widget/sharedwidget.dart';
 
@@ -54,7 +55,9 @@ class ChatDetails extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                IconButton(
+                CallButton(inviteduser: user!, isVideocall: true),
+                CallButton(inviteduser: user!, isVideocall: false),
+                /* IconButton(
                     onPressed: () {
                       if (blocprovider.caller!.uId.compareTo(user!.uId) != 0 ||
                           blocprovider.caller != null) {
@@ -67,7 +70,7 @@ class ChatDetails extends StatelessWidget {
                         toast(txt: 'you can\'t call youself');
                       }
                     },
-                    icon: const Icon(Icons.call)),
+                    icon: const Icon(Icons.call)),*/
                 const SizedBox(
                   width: 14,
                 ),
@@ -127,7 +130,7 @@ class ChatDetails extends StatelessWidget {
                             child: IconButton(
                                 onPressed: () {
                                   if (massagecontroller.text.trimLeft() != '') {
-                                    blocprovider.sendMessage(
+                                    blocprovider.sendTextMessage(
                                         receiverId: user!.uId,
                                         dateTime: DateTime.now()
                                             .millisecondsSinceEpoch,

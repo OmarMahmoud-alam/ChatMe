@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:project3/module/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project3/view/chat%20details/mainchat.dart';
+import 'package:project3/zegofunctionality/zego.dart';
 
 import '../widget/sharedwidget.dart';
 
@@ -73,24 +74,25 @@ void met(){
         .get()
         .then((value) {
       if (value.docs.isEmpty) {
-        log('errorin getCurrentUserInfo line 74');
+        adduser(
+          email: email,
+          uId: user!.uid,
+          phone: "01202202202",
+          name: user!.displayName ?? 'anoyanas',
+        );
+        meAsUser = SocialUserModel(
+            email: email,
+            uId: user!.uid,
+            phone: "01202202202",
+            name: user!.displayName ?? 'anoyanas');
       } else {
         meAsUser = SocialUserModel.fromJson(value.docs[0].data());
+        onUserLogin(meAsUser!);
       }
     }).catchError((e) {
       toast(txt: 'is empty $e');
       log('is empty   $e');
     });
-
-    meAsUser = SocialUserModel(
-        uId: user!.uid,
-        name: user!.displayName,
-        email: user!.email,
-        phone: user!.phoneNumber);
-
-    //log('repeat alot ${++eee}');
-    //log(user == null ? 'error' : user!.email.toString());
-    toast(txt: user!.email.toString());
   }
 
   late final idToken;
@@ -155,6 +157,7 @@ void met(){
         log('omar     tt- ${auth.currentUser!.email.toString()}');
       }
       clearUser();
+      onUserLogout();
       // Navigate to the sign in page after successful sign out
     } catch (e) {
       // Handle sign out errors, if any
@@ -239,8 +242,7 @@ void met(){
         //toast(txt: 'is empty');
         log('is empty');
         adduser(uId: uId, name: name, email: email, phone: phone);
-      } 
-      
+      }
     }).catchError((e) {
       toast(txt: 'is empty $e');
       log('is empty   $e');
@@ -252,17 +254,17 @@ void met(){
         SocialUserModel(name: name, uId: uId, email: email, phone: phone);
 
     storage.collection('users').doc(uId).set(user1.toMap()).then((value) {
-   //   toast(txt: 'Done');
+      //   toast(txt: 'Done');
       notifyListeners();
     }).catchError((e) {
-     // log(e.toString());
-     toast(txt: e.toString(), color: Colors.red).then((value) {
+      // log(e.toString());
+      toast(txt: e.toString(), color: Colors.red).then((value) {
         //notifyListeners();
       });
     });
   }
 
-    String? Password_validation(String s) {
+  String? Password_validation(String s) {
     /*RegExp passvalid =
         RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');*/
     if (s.length < 5) {
@@ -288,12 +290,11 @@ void met(){
     RegExp emailValid = RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
-
     if (emailValid.hasMatch(email) && password.length > 4) {
       FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) {
-       // log(value.user!.uid);
+        // log(value.user!.uid);
       }).catchError((e) {
         log(e.toString());
       });
