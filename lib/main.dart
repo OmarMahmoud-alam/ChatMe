@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
           return MaterialApp(
             navigatorKey: widget.navigatorKey,
             debugShowCheckedModeBanner: false,
-            home: email(),
+            home: const email(),
           );
         });
   }

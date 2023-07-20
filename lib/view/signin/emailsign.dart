@@ -15,6 +15,7 @@ class email extends StatelessWidget {
     if (provider.user != null) {
       return const HomeChat();
     } else {
+      provider.pagelogin();
       // If the user is not signed in, show the sign in page
       return const SignIn();
     }

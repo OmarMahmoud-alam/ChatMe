@@ -94,7 +94,7 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
     });
 
     bool? isconeect = await getlastseen(receiverId: receiver.uId);
-    if (isconeect == null || isconeect) {
+    if ((isconeect == null || !isconeect|| receiver.differenttime())) {
       FirebaseHelper.sendPushNotification(
           receiver.token[receiver.token.length - 1]!,
           'massage from username',
@@ -116,19 +116,15 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
     required String receiverId,
     required int dateTime,
   }) {
-    emit(SocialLastseenIntialState());
-
     FirebaseFirestore.instance
         .collection('users')
         .doc(receiverId)
         .collection('chats')
         .doc(uid)
         .collection('lastseen')
-        .add({'lastseen': dateTime}).then((value) {
-      emit(SocialLastseenSuccessState());
-    }).catchError((error) {
-      emit(SocialLastseenFailState());
-    });
+        .add({'lastseen': dateTime})
+        .then((value) {})
+        .catchError((error) {});
   }
 
   Future<bool?> getlastseen({
@@ -145,7 +141,7 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
         // .add({'lastseen': dateTime})
         .get()
         .then((value) {
-      return value.docs[0].data()['lastseen'] != -1;
+      return value.docs[0].data()['lastseen'] == -1;
     }).catchError((error) {
       emit(SocialLastseenFailState());
       return false;
@@ -250,7 +246,7 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
         return e.toString();
       });
     }).catchError((e) {
-      print('t22' + e.toString());
+      print('t22$e');
     });
     return link;
   }
@@ -285,7 +281,7 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
       var profileImage = File(pickedFile.path);
       print(pickedFile.path);
       String link = await uploadpicture(profileImage);
-      print('e33' + link);
+      print('e33$link');
       await sendimageMessage(
           receiverId: receiverId,
           dateTime: DateTime.now().millisecondsSinceEpoch,

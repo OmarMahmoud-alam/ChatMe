@@ -80,7 +80,7 @@ class ChatsWidgets extends StatelessWidget {
                                           image: DecorationImage(
                                             image: NetworkImage(
                                               blocprovider
-                                                  .allusers[index - 1].cover!,
+                                                  .allusers[index - 1].cover,
                                             ),
                                           )),
                                     ),
@@ -142,11 +142,33 @@ class Personchatpar extends StatelessWidget {
               width: double.infinity,
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage(
-                      user.cover!,
-                    ),
+                  Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundImage: NetworkImage(
+                          user.cover,
+                        ),
+                      ),
+                      if (user.differenttime())
+                        const Positioned(
+                          bottom: 8,
+                          right: -2,
+                          child: CircleAvatar(
+                            radius: 8.5,
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                      if (user.differenttime())
+                        const Positioned(
+                          bottom: 10,
+                          right: 0,
+                          child: CircleAvatar(
+                            radius: 6.5,
+                            backgroundColor: Colors.green,
+                          ),
+                        )
+                    ],
                   ),
                   const SizedBox(
                     width: 9,

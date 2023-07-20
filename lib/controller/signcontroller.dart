@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:isolate';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,24 @@ class UserProvider extends ChangeNotifier {
       'https://www.googleapis.com/auth/contacts.readonly'
     ],
   );
+  bool ispassword = false;
+  void changevisiblepassword() {
+    ispassword = !ispassword;
+    notifyListeners();
+  }
+
+  Isolate? myIsolate;
+
+  Future<void> startIsolate(String id) async {
+    myIsolate = await Isolate.spawn(FirebaseHelper.startUpdatingLastSeen, id);
+  }
+
+  void stopIsolate() async {
+    if (myIsolate != null) {
+      myIsolate!.kill(priority: Isolate.immediate);
+      print("Isolate stopped");
+    }
+  }
 
   /*void setUser(User user) {
     _user = user;
@@ -74,64 +93,82 @@ void met(){
   }
 */
 
-  Future<void> useractivenow({
-    required String id,
-  }) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(id)
-        .update({'lastseen': -1});
-  }
-
+  bool isclosing = true;
   void getCurrentUserInfo() async {
     user = auth.currentUser;
-    if (user == null) return;
-    FirebaseHelper.token = await FirebaseMessaging.instance.getToken();
-    //print(' FirebaseHelper.token');
-    toast(txt: FirebaseHelper.token ?? 'emmpttttt');
-    FirebaseFirestore.instance
-        .collection('users')
-        .where("uId", isEqualTo: user!.uid)
-        .get()
-        .then((value) async {
-      if (value.docs.isEmpty) {
-        adduser(
-          email: email,
-          uId: user!.uid,
-          phone: "01202202202",
-          name: user!.displayName ?? 'anoyanas',
-        );
-        Comman.meuser = SocialUserModel(
-            lastseen: -1,
-            bio: 'Bio',
+    if (user != null && isclosing) {
+      startIsolate(user!.uid);
+      print('tototototootot');
+      FirebaseHelper.token = await FirebaseMessaging.instance.getToken();
+      //print(' FirebaseHelper.token');
+      toast(txt: FirebaseHelper.token ?? 'emmpttttt');
+      FirebaseFirestore.instance
+          .collection('users')
+          .where("uId", isEqualTo: user!.uid)
+          .get()
+          .then((value) async {
+        if (value.docs.isEmpty) {
+          adduser(
             email: email,
             uId: user!.uid,
             phone: "01202202202",
             name: user!.displayName ?? 'anoyanas',
-            token: [FirebaseHelper.token],
-            cover:
-                'https://firebasestorage.googleapis.com/v0/b/fir-chat-406cc.appspot.com/o/share%2FAnonymity.jpg?alt=media&token=9afc2715-fa3d-4bf8-9438-1d9b35d5ad06');
-      } else {
-        //  print(value.docs[0].data()['token'].runtimeType);
-        await useractivenow(id: user!.uid);
+          );
+          Comman.meuser = SocialUserModel(
+              lastseen: -1,
+              bio: 'Bio',
+              email: email,
+              uId: user!.uid,
+              phone: "01202202202",
+              name: user!.displayName ?? 'anoyanas',
+              token: [FirebaseHelper.token],
+              cover:
+                  'https://firebasestorage.googleapis.com/v0/b/fir-chat-406cc.appspot.com/o/share%2FAnonymity.jpg?alt=media&token=9afc2715-fa3d-4bf8-9438-1d9b35d5ad06');
+        } else {
+          //  print(value.docs[0].data()['token'].runtimeType);
 
-        Comman.meuser = SocialUserModel.fromJson(value.docs[0].data());
+          Comman.meuser = SocialUserModel.fromJson(value.docs[0].data());
 
-        onUserLogin(Comman.meuser!);
-      }
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user!.uid)
-          .update({
-        'token': FieldValue.arrayUnion([FirebaseHelper.token]),
+          onUserLogin(Comman.meuser!);
+        }
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user!.uid)
+            .update({
+          'token': FieldValue.arrayUnion([FirebaseHelper.token]),
+        });
+      }).catchError((e) {
+        toast(txt: 'is empty 11 $e');
+        // print('is empty   $e');
       });
-    }).catchError((e) {
-      toast(txt: 'is empty 11 $e');
-      // print('is empty   $e');
-    });
+    }
   }
 
- 
+  String convertToLastseen(int lastSeen) {
+    DateTime lastSeenDateTime = DateTime.fromMillisecondsSinceEpoch(lastSeen);
+
+    final now = DateTime.now();
+    final difference = now.difference(lastSeenDateTime);
+
+    if (difference.inMinutes <= 10) {
+      return 'is active now';
+    }
+
+    // If the last seen datetime is today, return the time
+    if (now.year == lastSeenDateTime.year &&
+        now.month == lastSeenDateTime.month &&
+        now.day == lastSeenDateTime.day) {
+      return 'Last seen ${DateFormat.jm().format(lastSeenDateTime)}';
+    }
+
+    // Otherwise, return the date
+    if (difference.inDays < 7) {
+      return 'Last seen ${DateFormat('EEEE').format(lastSeenDateTime)}';
+    } else {
+      return 'Last seen ${DateFormat('MMM d, y').format(lastSeenDateTime)}';
+    }
+  }
+
   Future<void> logoutLastseen() async {
     final now = DateTime.now().millisecondsSinceEpoch;
     await FirebaseFirestore.instance
@@ -179,7 +216,7 @@ void met(){
         } else if (e.code == 'wrong-password') {
           makemassege(msg: 'wrong password');
         } else {
-          makemassege(msg: 'ttt2' + e.toString());
+          makemassege(msg: 'ttt2$e');
         }
       } catch (e) {
         makemassege(msg: e.toString());
@@ -197,7 +234,7 @@ void met(){
       //await deletetoken();
       //عايزين نشيل التوكن لما نقفل
       // await FirebaseMessaging.instance.deleteToken();
-
+      stopIsolate();
       clearUser();
       await logoutLastseen();
       await _googleSignIn.signOut();
@@ -225,7 +262,7 @@ void met(){
         getCurrentUserInfo();
         notifyListeners();
         makemassege(msg: 'done');
-        toast(txt: 'ttt3' + userCredential.user!.uid, color: Colors.deepOrange);
+        toast(txt: 'ttt3${userCredential.user!.uid}', color: Colors.deepOrange);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           makemassege(msg: 'userNotFound');
@@ -240,7 +277,12 @@ void met(){
 
   void clearUser() {
     user = null;
+    isclosing = false;
     notifyListeners();
+  }
+
+  void pagelogin() {
+    isclosing = true;
   }
 
   String? email_validation(String s) {
@@ -269,7 +311,7 @@ void met(){
         navigateto(context: context, widget: const HomeChat());
       }).catchError((e) {
         log(e.toString());
-        toast(txt: 'ttt5' + e.toString(), color: Colors.red);
+        toast(txt: 'ttt5$e', color: Colors.red);
       });
       notifyListeners();
     }
@@ -323,7 +365,7 @@ void met(){
       notifyListeners();
     }).catchError((e) {
       // log(e.toString());
-      toast(txt: 'ttt1' + e.toString(), color: Colors.red).then((value) {
+      toast(txt: 'ttt1$e', color: Colors.red).then((value) {
         //notifyListeners();
       });
     });

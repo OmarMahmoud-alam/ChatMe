@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project3/controller/signcontroller.dart';
 import 'package:project3/cubits/settingcubit/setting_cubit.dart';
-import 'package:project3/styles/styles.dart';
 import 'package:project3/view/setting/setting%20widget/Bio.dart';
 import 'package:project3/view/setting/setting%20widget/Namechange.dart';
 import 'package:project3/view/setting/setting%20widget/number.dart';
@@ -39,7 +38,7 @@ class Settingapp extends StatelessWidget {
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image: myBloc.profileImage == null
-                                        ? NetworkImage(myBloc.usertemp!.cover!)
+                                        ? NetworkImage(myBloc.usertemp!.cover)
                                         : FileImage(myBloc.profileImage!)
                                             as ImageProvider,
                                     fit: BoxFit.cover)),
@@ -122,7 +121,7 @@ class Settingapp extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(myBloc.usertemp!.name!),
+                                  Text(myBloc.usertemp!.name),
                                   const Text('tap to change name',
                                       style: TextStyle(color: Colors.grey))
                                 ],
@@ -273,10 +272,10 @@ class Settingapp extends StatelessWidget {
                         radius: 10,
                         background: Colors.red,
                         function: () async {
-                          Provider.of<UserProvider>(context, listen: false)
-                              .logout()
-                              .then((value) => navigateto(
-                                  context: context, widget: const email()));
+                          await Provider.of<UserProvider>(context,
+                                  listen: false)
+                              .logout();
+                          navigateto(context: context, widget: const email());
 
                           //  Cubitsetting.get(context).logout();
                         },
@@ -295,19 +294,19 @@ class Imagepackerform extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: Wrap(
         children: <Widget>[
           ListTile(
-              leading: Icon(Icons.camera),
-              title: Text('camera'),
+              leading: const Icon(Icons.camera),
+              title: const Text('camera'),
               onTap: () {
                 myBloc.uploadprofileImagemassage(ImageSource.camera);
                 Navigator.pop(context);
               }),
           ListTile(
-              leading: Icon(Icons.image),
-              title: Text('gallery'),
+              leading: const Icon(Icons.image),
+              title: const Text('gallery'),
               onTap: () {
                 myBloc.uploadprofileImagemassage(ImageSource.gallery);
                 Navigator.pop(context);

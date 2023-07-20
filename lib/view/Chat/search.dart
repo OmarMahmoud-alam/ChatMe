@@ -16,7 +16,7 @@ class SearchWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SearchCubit()..getalluser(),
+      create: (context) => SearchCubit()..getsearchusers(null),
       child: BlocConsumer<SearchCubit, SearchState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -28,24 +28,38 @@ class SearchWidgets extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             slivers: [
               SliverAppBar(
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        cubitprovider.getsearchusers(searchcontroller.text);
+                      },
+                      icon: const Icon(
+                        Icons.search,
+                        color: Colors.black,
+                      ))
+                ],
+
                 backgroundColor: Colors.white,
                 pinned: true,
                 // toolbarHeight: 53,
                 flexibleSpace: Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 30,
-                    vertical: 5,
+                  margin: const EdgeInsets.only(
+                    left: 22,
+                    right: 50,
+                    top: 3,
+                    bottom: 3,
                   ),
                   width: double.infinity,
                   // height: 90,
                   child: defaultFormField(
+                    onChange: (s) {},
                     border: const OutlineInputBorder(
                       gapPadding: 2.0,
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
                     ),
                     hint: 'search',
                     fillcolor: Style.bordercolor,
-                    prefix: Icon(Icons.search),
+                    prefix: const Icon(Icons.search),
                     controller: searchcontroller,
                     type: TextInputType.text,
                     validate: (String? value) {
@@ -56,8 +70,12 @@ class SearchWidgets extends StatelessWidget {
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate((context, index) {
-                  return Personchatpar(user:cubitprovider.allusers[index],);
-                }, childCount: cubitprovider.allusers.length),
+                  return Personchatpar(
+                    user: cubitprovider.searchusers[index],
+                    lastseen: cubitprovider.convertToLastseen(
+                        cubitprovider.searchusers[index].lastseen),
+                  );
+                }, childCount: cubitprovider.searchusers.length),
               )
             ],
           );
@@ -69,9 +87,11 @@ class SearchWidgets extends StatelessWidget {
 
 class Personchatpar extends StatelessWidget {
   final SocialUserModel user;
+  final String lastseen;
   const Personchatpar({
     super.key,
     required this.user,
+    required this.lastseen,
   });
 
   @override
@@ -93,11 +113,33 @@ class Personchatpar extends StatelessWidget {
               width: double.infinity,
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage(
-                      user.cover!,
-                    ),
+                  Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundImage: NetworkImage(
+                          user.cover,
+                        ),
+                      ),
+                      if (user.differenttime())
+                        const Positioned(
+                          bottom: 8,
+                          right: -2,
+                          child: CircleAvatar(
+                            radius: 8.5,
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                      if (user.differenttime())
+                        const Positioned(
+                          bottom: 10,
+                          right: 0,
+                          child: CircleAvatar(
+                            radius: 6.5,
+                            backgroundColor: Colors.green,
+                          ),
+                        )
+                    ],
                   ),
                   const SizedBox(
                     width: 9,
@@ -106,7 +148,7 @@ class Personchatpar extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
-                        height: 3,
+                        height: 7,
                       ),
                       Text(
                         user.name,
@@ -116,13 +158,13 @@ class Personchatpar extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        'this my last message massage',
+                        lastseen,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Style.masege,
                       ),
                       const SizedBox(
-                        height: 3,
+                        height: 10,
                       )
                     ],
                   ),
@@ -130,17 +172,6 @@ class Personchatpar extends StatelessWidget {
                     width: 10,
                   ),
                   const Spacer(),
-                  Column(
-                    children: [
-                      Text(
-                        '3m ago',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Style.nametext,
-                      ),
-                      const Spacer()
-                    ],
-                  ),
                   const SizedBox(
                     width: 20,
                   ),

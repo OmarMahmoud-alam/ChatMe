@@ -42,7 +42,7 @@ class ChatDetails extends StatelessWidget {
                    CircleAvatar(
                       radius: 22,
                       backgroundImage: NetworkImage(
-                        user!.cover!,
+                        user!.cover,
                       )),
                   const SizedBox(
                     width: 10.0,

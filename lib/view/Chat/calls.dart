@@ -1,11 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:project3/controller/signcontroller.dart';
 
-import 'package:project3/styles/styles.dart';
-import 'package:project3/view/chatWithPerson/personchat.dart';
-import 'package:project3/widget/sharedwidget.dart';
-import 'package:provider/provider.dart';
+class CallsWidgetPage extends StatefulWidget {
+  @override
+  _CallsWidgetPageState createState() => _CallsWidgetPageState();
+}
 
+class _CallsWidgetPageState extends State<CallsWidgetPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 10),
+    )..repeat();
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.linear);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RotationTransition(
+              turns: _animation,
+              child: Image.asset(
+                'assets/images/images.png',
+                width: 150,
+                height: 150,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Coming Soon',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[400],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'This feature is coming soon!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+/*
 class CallsWidget extends StatelessWidget {
   const CallsWidget({
     super.key,
@@ -14,7 +77,8 @@ class CallsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return CustomScrollView(
+    return
+     /*CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
         SliverList(
@@ -23,12 +87,12 @@ class CallsWidget extends StatelessWidget {
           }, childCount: 10),
         )
       ],
-    );
+    );*/
   }
 }
 
-class personchatpar extends StatelessWidget {
-  const personchatpar({
+class CallpersonWidget extends StatelessWidget {
+  const CallpersonWidget({
     super.key,
   });
 
@@ -144,3 +208,4 @@ class firstelement extends StatelessWidget {
     );
   }
 }
+*/

@@ -17,100 +17,122 @@ class register extends StatelessWidget {
       appBar: AppBar(
         title: const Text('register'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                inputdata(
-                  controller: provider.usernamecontroller,
-                  label: 'UserName',
-                  validation: (s) {
-                    if (s!.isEmpty) {
-                      return 'Username can\'t be empty';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                inputdata(
-                  controller: provider.emailcontroller,
-                  label: 'email',
-                  validation: (s) {
-                    return provider.email_validation(s!);
-                  },
-                ),
-                const SizedBox(height: 16),
-                inputdata(
-                  controller: provider.passwordcontroller,
-                  label: ' password',
-                  validation: (s) {
-                    return provider.Password_validation(s!);
-                  },
-                ),
-                const SizedBox(height: 16),
-                inputdata(
-                  controller: provider.passwordcontroller2,
-                  label: ' password',
-                  validation: (s) {
-                    if (provider.passwordcontroller.text != s) {
-                      return 'two password must be same';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                /*   inputdata(
-                  Controller: provider.passwordcontroller,
-                  label: ' phone',
-                  validation: (s) {
-                    return provider.Password_verificaton(s!);
-                  },
-                ),
-                const SizedBox(height: 16),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'sign up'.toUpperCase(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline3!
+                        .copyWith(fontWeight: FontWeight.bold, fontSize: 40.0),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Text(
+                    'signup to our social app THE BEST EVER ',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline3!
+                        .copyWith(fontSize: 20.0),
+                  ),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  inputdata(
+                    controller: provider.usernamecontroller,
+                    label: 'UserName',
+                    validation: (s) {
+                      if (s!.isEmpty) {
+                        return 'Username can\'t be empty';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  inputdata(
+                    controller: provider.emailcontroller,
+                    label: 'email',
+                    validation: (s) {
+                      return provider.email_validation(s!);
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  inputdata(
+                    controller: provider.passwordcontroller,
+                    label: ' password',
+                    validation: (s) {
+                      return provider.Password_validation(s!);
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  inputdata(
+                    controller: provider.passwordcontroller2,
+                    label: ' password',
+                    validation: (s) {
+                      if (provider.passwordcontroller.text != s) {
+                        return 'two password must be same';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  /*   inputdata(
+                    Controller: provider.passwordcontroller,
+                    label: ' phone',
+                    validation: (s) {
+                      return provider.Password_verificaton(s!);
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  */
+                  /*  inputdata(
+                    Controller: provider.passwordcontroller,
+                    label: ' age',
+                    validation: (s) {
+                      return provider.age_verificaton(s!);
+                    },
+                  ),
                 */
-                /*  inputdata(
-                  Controller: provider.passwordcontroller,
-                  label: ' age',
-                  validation: (s) {
-                    return provider.age_verificaton(s!);
-                  },
-                ),
-              */
-                const SizedBox(height: 16),
-                Center(
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: (BorderRadius.circular(100.0))),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            side: const BorderSide(
-                                width: 1,
-                                color: Color.fromARGB(255, 201, 76, 76)),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                          borderRadius: (BorderRadius.circular(100.0))),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              side: const BorderSide(
+                                  width: 1,
+                                  color: Color.fromARGB(255, 201, 76, 76)),
+                            ),
                           ),
                         ),
+                        child: const Text('registe '),
+                        onPressed: () => provider.usersignup(context, formKey),
                       ),
-                      child: const Text('registe '),
-                      onPressed: () => provider.usersignup(context, formKey),
                     ),
                   ),
-                ),
-                Center(
-                  child: TextButton(
-                      onPressed: () {
-                        navigateto(context: context, widget: const SignIn());
-                      },
-                      child: const Text('have already account')),
-                ),
-              ],
+                  Center(
+                    child: TextButton(
+                        onPressed: () {
+                          navigateto(context: context, widget: const SignIn());
+                        },
+                        child: const Text('have already account')),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

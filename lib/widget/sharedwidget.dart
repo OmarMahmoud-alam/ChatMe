@@ -56,16 +56,18 @@ class defaultFormField extends StatelessWidget {
   final GestureTapCallback? onTap;
   final bool isPassword;
   final FormFieldValidator<String> validate;
+  final void Function(PointerDownEvent)? tapout;
   final String? label;
   final String? hint;
   final Widget? prefix;
   final IconData? suffix;
-  final Function? suffixPressed;
+  final Function()? suffixPressed;
   final bool isClickable;
   final Color? fillcolor;
   const defaultFormField({
     super.key,
     required this.controller,
+    this.tapout,
     this.fillcolor,
     required this.type,
     this.onSubmit,
@@ -84,6 +86,7 @@ class defaultFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTapOutside: tapout,
       controller: controller,
       keyboardType: type,
       obscureText: isPassword,
@@ -99,9 +102,7 @@ class defaultFormField extends StatelessWidget {
         prefixIcon: prefix,
         suffixIcon: suffix != null
             ? IconButton(
-                onPressed: () {
-                  suffixPressed!();
-                },
+                onPressed: suffixPressed,
                 icon: Icon(
                   suffix,
                 ),

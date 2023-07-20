@@ -18,6 +18,14 @@ class SocialUserModel {
     required this.token,
     required this.lastseen,
   });
+  bool differenttime() {
+    
+    final now = DateTime.now();
+
+    DateTime lasttime = DateTime.fromMillisecondsSinceEpoch(lastseen);
+    final difference = now.difference(lasttime);
+    return difference.inMinutes <= 10;
+  }
 
   SocialUserModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];

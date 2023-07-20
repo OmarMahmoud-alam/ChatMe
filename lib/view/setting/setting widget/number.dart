@@ -12,7 +12,7 @@ class PhoneChange extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Phone'),
+        title: const Text('Phone'),
         actions: [
           IconButton(
             onPressed: () {
@@ -22,7 +22,7 @@ class PhoneChange extends StatelessWidget {
                 Navigator.pop(context);
               }
             },
-            icon: Icon(Icons.check_box),
+            icon: const Icon(Icons.check_box),
           )
         ],
       ),
@@ -40,8 +40,9 @@ class PhoneChange extends StatelessWidget {
               validator: (String? s) {
                 if (s == null || s == '') {
                   return 'must enter value';
-                } else
+                } else {
                   return null;
+                }
               },
             ),
           ),

@@ -9,7 +9,7 @@ class CallButton extends StatelessWidget {
   final bool isVideocall;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 40,
       child: ZegoSendCallInvitationButton(
         icon: ButtonIcon(
@@ -17,7 +17,7 @@ class CallButton extends StatelessWidget {
                 ? const Icon(Icons.call)
                 : const Icon(Icons.video_call),
             backgroundColor: Colors.blue),
-        iconSize: Size(40, 50),
+        iconSize: const Size(40, 50),
         isVideoCall: isVideocall,
         resourceID: "Answer for me", // For offline call notification
         invitees: [

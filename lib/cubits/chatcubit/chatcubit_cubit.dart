@@ -66,9 +66,9 @@ class ChatcubitCubit extends Cubit<ChatcubitState> {
         print(element.data()['uId']);
         if (element.data()['uId'] != uid) {
           allusers.add(SocialUserModel.fromJson(element.data()));
-          emit(SocialGetallUsersuccessState());
         }
       }
+      emit(SocialGetallUsersuccessState());
     }).catchError((e) {
       emit(SocialGetallUserfailState());
     });

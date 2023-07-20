@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project3/cubits/settingcubit/setting_cubit.dart';
-import 'package:project3/styles/styles.dart';
 
 class NameChange extends StatelessWidget {
   const NameChange({super.key});
@@ -28,7 +27,7 @@ class NameChange extends StatelessWidget {
                     Navigator.pop(context);
                   }
                 },
-                icon: Icon(Icons.check_box),
+                icon: const Icon(Icons.check_box),
               );
             },
           )
@@ -47,8 +46,9 @@ class NameChange extends StatelessWidget {
               validator: (String? s) {
                 if (s == null || s == '') {
                   return 'must enter value';
-                } else
+                } else {
                   return null;
+                }
               },
             ),
           ),

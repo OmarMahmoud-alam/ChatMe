@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -9,7 +11,26 @@ import 'package:project3/widget/sharedwidget.dart';
 class FirebaseHelper {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
   static late NotificationSettings settings;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   static String? token;
+
+  static void startUpdatingLastSeen(String userId) async {
+    // Get the current user's ID
+
+    // Get a reference to the user's document in Firestore
+    final userDocRef =
+        FirebaseFirestore.instance.collection("users").doc(userId);
+    final now = DateTime.now().millisecondsSinceEpoch;
+
+    // Update the last seen timestamp every ten minutes
+    Timer.periodic(const Duration(minutes: 10), (timer) async {
+      try {
+        await userDocRef.update({"lastseen": now});
+      } catch (e) {
+        print("Error updating last seen timestamp: $e");
+      }
+    });
+  }
 
   static Future<void> start() async {
     NotificationSettings settings = await messaging.requestPermission(
@@ -82,8 +103,8 @@ class FirebaseHelper {
       response;
       print('done100');
     } catch (e) {
-      print('errrrrrrr' + e.toString());
-      toast(txt: '' + e.toString());
+      print('errrrrrrr$e');
+      toast(txt: '$e');
     }
   }
 }

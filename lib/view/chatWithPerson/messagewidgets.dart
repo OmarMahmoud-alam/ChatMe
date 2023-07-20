@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project3/cubits/Chatmessage/chatmessage_cubit.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -35,7 +33,7 @@ class mymassage extends StatelessWidget {
         : Align(
             alignment: AlignmentDirectional.centerEnd,
             child: Container(
-              margin: EdgeInsets.all(12.0),
+              margin: const EdgeInsets.all(12.0),
               height: 300,
               decoration: BoxDecoration(
                 border: Border.all(
@@ -65,17 +63,17 @@ class imagepackerform extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: Wrap(
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.camera),
-            title: Text('camera'),
+            leading: const Icon(Icons.camera),
+            title: const Text('camera'),
             onTap: () => blocprovid.SendImagemassage(ImageSource.camera, userid),
           ),
           ListTile(
-            leading: Icon(Icons.image),
-            title: Text('gallery'),
+            leading: const Icon(Icons.image),
+            title: const Text('gallery'),
             onTap: () =>
                 blocprovid.SendImagemassage(ImageSource.gallery, userid),
           ),

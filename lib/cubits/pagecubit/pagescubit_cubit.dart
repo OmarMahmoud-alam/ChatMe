@@ -11,7 +11,7 @@ class PagescubitCubit extends Cubit<PagescubitState> {
   int pageindex = 0;
   List<Widget> bodies = [
     const ChatsWidgets(),
-    const CallsWidget(),
+     CallsWidgetPage(),
     SearchWidgets(),
     const Settingapp()
   ];

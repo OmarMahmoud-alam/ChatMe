@@ -12,7 +12,7 @@ class BioChange extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bio'),
+        title: const Text('Bio'),
         actions: [
           IconButton(
             onPressed: () {
@@ -21,7 +21,7 @@ class BioChange extends StatelessWidget {
                 Navigator.pop(context);
               }
             },
-            icon: Icon(Icons.check_box),
+            icon: const Icon(Icons.check_box),
           )
         ],
       ),
@@ -39,8 +39,9 @@ class BioChange extends StatelessWidget {
               validator: (String? s) {
                 if (s == null || s == '') {
                   return 'must enter value';
-                } else
+                } else {
                   return null;
+                }
               },
             ),
           ),

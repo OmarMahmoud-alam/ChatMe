@@ -35,7 +35,7 @@ class CallEndToEnd extends StatelessWidget {
                   userName: user.name,
                   plugins: [ZegoUIKitSignalingPlugin()],
                   config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall())
-              : CircularProgressIndicator();
+              : const CircularProgressIndicator();
         }));
   }
 }
