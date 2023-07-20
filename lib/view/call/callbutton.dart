@@ -23,7 +23,7 @@ class CallButton extends StatelessWidget {
         invitees: [
           ZegoUIKitUser(
             id: inviteduser.uId,
-            name: inviteduser.name!,
+            name: inviteduser.name,
           )
         ],
       ),

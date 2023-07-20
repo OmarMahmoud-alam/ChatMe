@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project3/controller/signcontroller.dart';
+import 'package:project3/util/absorve.dart';
+import 'package:project3/util/firebasehelper.dart';
 import 'package:project3/view/signin/emailsign.dart';
 
 import 'package:provider/provider.dart';
@@ -14,8 +16,15 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  final observer = LifecycleObserver();
 
+  // Add the observer to the WidgetsBinding
+  WidgetsBinding.instance.addObserver(observer);
+
+  await FirebaseHelper.start();
   final navigatorKey = GlobalKey<NavigatorState>();
+
+  await LocalNotificationService.initialize();
 
   /// 1.1.2: set navigator key to ZegoUIKitPrebuiltCallInvitationService
   ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);

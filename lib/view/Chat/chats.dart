@@ -4,7 +4,7 @@ import 'package:project3/cubits/chatcubit/chatcubit_cubit.dart';
 import 'package:project3/module/user.dart';
 
 import 'package:project3/styles/styles.dart';
-import 'package:project3/view/chat/personchat.dart';
+import 'package:project3/view/chatWithPerson/personchat.dart';
 import 'package:project3/widget/sharedwidget.dart';
 
 class ChatsWidgets extends StatelessWidget {
@@ -16,7 +16,7 @@ class ChatsWidgets extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ChatcubitCubit()
-        ..getUserData(context)
+        ..getUserData()
         ..getalluser()
         ..getuserFriends(),
       child: BlocConsumer<ChatcubitCubit, ChatcubitState>(
@@ -69,22 +69,26 @@ class ChatsWidgets extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    SizedBox(
+                                    Container(
+                                      // color: Colors.black,
                                       width: 56,
                                       height: 56,
-                                      child: FittedBox(
-                                        child: Image.asset(
-                                            'assets/images/Avatar2.png',
-                                            fit: BoxFit.fill),
-                                      ),
+                                      decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          borderRadius:
+                                              BorderRadius.circular(14.0),
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                              blocprovider
+                                                  .allusers[index - 1].cover!,
+                                            ),
+                                          )),
                                     ),
                                     SizedBox(
                                         width: 56,
                                         child: Text(
                                           textAlign: TextAlign.center,
-                                          blocprovider
-                                                  .allusers[index - 1].name ??
-                                              'noname',
+                                          blocprovider.allusers[index - 1].name,
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                           style: Style.nametext
@@ -100,7 +104,7 @@ class ChatsWidgets extends StatelessWidget {
                     ),
                     SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
-                        return personchatpar(
+                        return Personchatpar(
                             user: blocprovider.allusers[index]);
                       }, childCount: blocprovider.allusers.length),
                     )
@@ -112,9 +116,9 @@ class ChatsWidgets extends StatelessWidget {
   }
 }
 
-class personchatpar extends StatelessWidget {
+class Personchatpar extends StatelessWidget {
   final SocialUserModel user;
-  const personchatpar({
+  const Personchatpar({
     super.key,
     required this.user,
   });
@@ -132,38 +136,43 @@ class personchatpar extends StatelessWidget {
                 ));
           },
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(6.0),
             child: SizedBox(
               height: 56,
               width: double.infinity,
               child: Row(
                 children: [
-                  SizedBox(
-                    width: 56,
-                    height: 56,
-                    child: Image.asset('assets/images/Avatar2.png',
-                        fit: BoxFit.fill),
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage(
+                      user.cover!,
+                    ),
                   ),
                   const SizedBox(
-                    width: 10,
+                    width: 9,
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(
+                        height: 3,
+                      ),
                       Text(
-                        user.name ?? 'noname',
+                        user.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Style.nametext,
                       ),
-                      const SizedBox(
-                        height: 5,
-                      ),
+                      const Spacer(),
                       Text(
-                        'this my massage',
+                        'this my last message massage',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Style.masege,
                       ),
+                      const SizedBox(
+                        height: 3,
+                      )
                     ],
                   ),
                   const SizedBox(

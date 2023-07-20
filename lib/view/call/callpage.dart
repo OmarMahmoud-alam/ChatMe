@@ -32,7 +32,7 @@ class CallEndToEnd extends StatelessWidget {
                       ? "${blocprovider.caller!.uId}${user.uId}"
                       : "${user.uId}${blocprovider.caller!.uId}",
                   userID: 'user_${user.uId}',
-                  userName: user.name ?? 'Anayomas',
+                  userName: user.name,
                   plugins: [ZegoUIKitSignalingPlugin()],
                   config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall())
               : CircularProgressIndicator();

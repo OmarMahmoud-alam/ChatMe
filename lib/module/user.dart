@@ -1,18 +1,22 @@
 class SocialUserModel {
-  String? name;
-  String? email;
-  String? phone;
+  late String name;
+  late String email;
+  late String phone;
   late String uId;
-  String? cover;
-  String? bio;
+  late String cover;
+  late String bio;
+  late int lastseen;
+  late List<String?> token;
 
   SocialUserModel({
-    this.email,
-    this.name,
-    this.phone,
+    required this.email,
+    required this.name,
+    required this.phone,
     required this.uId,
-    this.cover,
-    this.bio,
+    required this.cover,
+    required this.bio,
+    required this.token,
+    required this.lastseen,
   });
 
   SocialUserModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +26,8 @@ class SocialUserModel {
     uId = json['uId'];
     cover = json['cover'];
     bio = json['bio'];
+    lastseen = json['lastseen'];
+    token = (json['token']).cast<String>();
   }
 
   Map<String, dynamic> toMap() {
@@ -32,6 +38,13 @@ class SocialUserModel {
       'uId': uId,
       'cover': cover,
       'bio': bio,
+      'token': token,
+      'lastseen': lastseen
     };
+  }
+
+  String tostring() {
+    String res = "name: $name ,phone: $phone ,bio: $bio ";
+    return res;
   }
 }

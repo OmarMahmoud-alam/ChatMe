@@ -4,24 +4,34 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:project3/module/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:project3/view/chat%20details/mainchat.dart';
+import 'package:project3/styles/styles.dart';
+import 'package:project3/util/firebasehelper.dart';
+import 'package:project3/view/Chat/Home.dart';
 import 'package:project3/zegofunctionality/zego.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../widget/sharedwidget.dart';
 
 class UserProvider extends ChangeNotifier {
   User? user;
-  SocialUserModel? meAsUser;
 
-  int eee = 0;
   String email = 'error';
   final db = FirebaseFirestore.instance;
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController usernamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController passwordcontroller2 = TextEditingController();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore storage = FirebaseFirestore.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: <String>[
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly'
+    ],
+  );
 
   /*void setUser(User user) {
     _user = user;
@@ -46,10 +56,9 @@ void met(){
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
-*/
+
   void sendcode(String smsCode) async {
     // Create a PhoneAuthCredential with the code
-    toast(txt: '1');
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: verificatId!, smsCode: smsCode);
@@ -63,16 +72,28 @@ void met(){
       log(e.toString());
     }
   }
+*/
+
+  Future<void> useractivenow({
+    required String id,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(id)
+        .update({'lastseen': -1});
+  }
 
   void getCurrentUserInfo() async {
     user = auth.currentUser;
-    email = user!.email.toString();
-
+    if (user == null) return;
+    FirebaseHelper.token = await FirebaseMessaging.instance.getToken();
+    //print(' FirebaseHelper.token');
+    toast(txt: FirebaseHelper.token ?? 'emmpttttt');
     FirebaseFirestore.instance
         .collection('users')
         .where("uId", isEqualTo: user!.uid)
         .get()
-        .then((value) {
+        .then((value) async {
       if (value.docs.isEmpty) {
         adduser(
           email: email,
@@ -80,31 +101,51 @@ void met(){
           phone: "01202202202",
           name: user!.displayName ?? 'anoyanas',
         );
-        meAsUser = SocialUserModel(
+        Comman.meuser = SocialUserModel(
+            lastseen: -1,
+            bio: 'Bio',
             email: email,
             uId: user!.uid,
             phone: "01202202202",
-            name: user!.displayName ?? 'anoyanas');
+            name: user!.displayName ?? 'anoyanas',
+            token: [FirebaseHelper.token],
+            cover:
+                'https://firebasestorage.googleapis.com/v0/b/fir-chat-406cc.appspot.com/o/share%2FAnonymity.jpg?alt=media&token=9afc2715-fa3d-4bf8-9438-1d9b35d5ad06');
       } else {
-        meAsUser = SocialUserModel.fromJson(value.docs[0].data());
-        onUserLogin(meAsUser!);
+        //  print(value.docs[0].data()['token'].runtimeType);
+        await useractivenow(id: user!.uid);
+
+        Comman.meuser = SocialUserModel.fromJson(value.docs[0].data());
+
+        onUserLogin(Comman.meuser!);
       }
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .update({
+        'token': FieldValue.arrayUnion([FirebaseHelper.token]),
+      });
     }).catchError((e) {
-      toast(txt: 'is empty $e');
-      log('is empty   $e');
+      toast(txt: 'is empty 11 $e');
+      // print('is empty   $e');
     });
   }
 
-  late final idToken;
+ 
+  Future<void> logoutLastseen() async {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(Comman.meuser!.uId)
+        .update({'lastseen': now});
+  }
 
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  final FirebaseFirestore storage = FirebaseFirestore.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: <String>[
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly'
-    ],
-  );
+  Future<void> deletetoken() async {
+    await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
+      'token': FieldValue.arrayRemove([FirebaseHelper.token]),
+    });
+    FirebaseHelper.token = null;
+  }
 
   Future<void> google_SignIn(context) async {
     try {
@@ -125,17 +166,20 @@ void met(){
 
         getCurrentUserInfo();
         adduserdata(
-            email: userCredential.user!.email, uId: userCredential.user!.uid);
+          name: userCredential.user!.displayName,
+          email: userCredential.user!.email,
+          uId: userCredential.user!.uid,
+          cover: userCredential.user!.photoURL,
+        );
         notifyListeners();
         navigateto(context: context, widget: const HomeChat());
       } on FirebaseAuthException catch (e) {
-        toast(txt: e.code.toString());
         if (e.code == 'user-not-found') {
           makemassege(msg: 'userNotFound');
         } else if (e.code == 'wrong-password') {
           makemassege(msg: 'wrong password');
         } else {
-          makemassege(msg: e.toString());
+          makemassege(msg: 'ttt2' + e.toString());
         }
       } catch (e) {
         makemassege(msg: e.toString());
@@ -148,16 +192,18 @@ void met(){
     }
   }
 
-  void logout() async {
+  Future<void> logout() async {
     try {
-      await FirebaseAuth.instance.signOut();
-      await _googleSignIn.signOut();
+      //await deletetoken();
+      //عايزين نشيل التوكن لما نقفل
+      // await FirebaseMessaging.instance.deleteToken();
 
-      if (auth.currentUser != null) {
-        log('omar     tt- ${auth.currentUser!.email.toString()}');
-      }
       clearUser();
-      onUserLogout();
+      await logoutLastseen();
+      await _googleSignIn.signOut();
+      await FirebaseAuth.instance.signOut();
+      await onUserLogout();
+
       // Navigate to the sign in page after successful sign out
     } catch (e) {
       // Handle sign out errors, if any
@@ -179,7 +225,7 @@ void met(){
         getCurrentUserInfo();
         notifyListeners();
         makemassege(msg: 'done');
-        toast(txt: userCredential.user!.uid, color: Colors.deepOrange);
+        toast(txt: 'ttt3' + userCredential.user!.uid, color: Colors.deepOrange);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           makemassege(msg: 'userNotFound');
@@ -215,7 +261,6 @@ void met(){
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) {
         log('done');
-        toast(txt: value.user!.uid);
         adduserdata(
             uId: value.user!.uid,
             name: usernamecontroller.text,
@@ -224,7 +269,7 @@ void met(){
         navigateto(context: context, widget: const HomeChat());
       }).catchError((e) {
         log(e.toString());
-        toast(txt: e.toString(), color: Colors.red);
+        toast(txt: 'ttt5' + e.toString(), color: Colors.red);
       });
       notifyListeners();
     }
@@ -232,7 +277,11 @@ void met(){
 
 //put user data from firebase
   void adduserdata(
-      {required uId, name = "omar", required email, phone = "01021212121"}) {
+      {required uId,
+      name = "anayonmas",
+      required email,
+      phone = "01021212121",
+      String? cover}) {
     FirebaseFirestore.instance
         .collection('users')
         .where("uId", isEqualTo: uId)
@@ -241,7 +290,7 @@ void met(){
       if (value.docs.isEmpty) {
         //toast(txt: 'is empty');
         log('is empty');
-        adduser(uId: uId, name: name, email: email, phone: phone);
+        adduser(uId: uId, name: name, email: email, phone: phone, cover: cover);
       }
     }).catchError((e) {
       toast(txt: 'is empty $e');
@@ -249,16 +298,32 @@ void met(){
     });
   }
 
-  void adduser({required uId, required name, required email, required phone}) {
-    SocialUserModel user1 =
-        SocialUserModel(name: name, uId: uId, email: email, phone: phone);
+  void adduser(
+      {required uId,
+      required name,
+      required email,
+      required phone,
+      cover =
+          'https://firebasestorage.googleapis.com/v0/b/fir-chat-406cc.appspot.com/o/share%2FAnonymity.jpg?alt=media&token=9afc2715-fa3d-4bf8-9438-1d9b35d5ad06'}) async {
+    String? token = await FirebaseMessaging.instance.getToken();
+
+    SocialUserModel user1 = SocialUserModel(
+      lastseen: -1,
+      bio: 'Bio',
+      name: name,
+      uId: uId,
+      email: email,
+      phone: phone,
+      token: [token],
+      cover: cover,
+    );
 
     storage.collection('users').doc(uId).set(user1.toMap()).then((value) {
       //   toast(txt: 'Done');
       notifyListeners();
     }).catchError((e) {
       // log(e.toString());
-      toast(txt: e.toString(), color: Colors.red).then((value) {
+      toast(txt: 'ttt1' + e.toString(), color: Colors.red).then((value) {
         //notifyListeners();
       });
     });

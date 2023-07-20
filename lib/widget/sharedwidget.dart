@@ -52,13 +52,13 @@ class defaultFormField extends StatelessWidget {
   final TextInputType type;
   final ValueChanged<String>? onSubmit;
   final InputBorder border;
-   final ValueChanged<String>? onChange;
+  final ValueChanged<String>? onChange;
   final GestureTapCallback? onTap;
   final bool isPassword;
-  final  FormFieldValidator<String> validate;
+  final FormFieldValidator<String> validate;
   final String? label;
   final String? hint;
-  final IconData? prefix;
+  final Widget? prefix;
   final IconData? suffix;
   final Function? suffixPressed;
   final bool isClickable;
@@ -96,9 +96,7 @@ class defaultFormField extends StatelessWidget {
         fillColor: fillcolor,
         labelText: label,
         hintText: hint,
-        prefixIcon: Icon(
-          prefix,
-        ),
+        prefixIcon: prefix,
         suffixIcon: suffix != null
             ? IconButton(
                 onPressed: () {

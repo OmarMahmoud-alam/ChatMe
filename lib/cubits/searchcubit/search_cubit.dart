@@ -1,13 +1,39 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:meta/meta.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+import 'package:meta/meta.dart';
 import 'package:project3/module/user.dart';
 
-part 'chatcubit_state.dart';
+part 'search_state.dart';
 
-class ChatcubitCubit extends Cubit<ChatcubitState> {
-  ChatcubitCubit() : super(ChatcubitInitial());
+class SearchCubit extends Cubit<SearchState> {
+  SearchCubit() : super(SearchInitial());
+
+  String convertToLastseen(int lastSeen) {
+    if (lastSeen != -1) {
+      DateTime lastSeenDateTime = DateTime.fromMillisecondsSinceEpoch(lastSeen);
+
+      final now = DateTime.now();
+      final difference = now.difference(lastSeenDateTime);
+
+      // If the last seen datetime is today, return the time
+      if (now.year == lastSeenDateTime.year &&
+          now.month == lastSeenDateTime.month &&
+          now.day == lastSeenDateTime.day) {
+        return 'Last seen ${DateFormat.jm().format(lastSeenDateTime)}';
+      }
+
+      // Otherwise, return the date
+      if (difference.inDays < 7) {
+        return 'Last seen ${DateFormat('EEEE').format(lastSeenDateTime)}';
+      } else {
+        return 'Last seen ${DateFormat('MMM d, y').format(lastSeenDateTime)}';
+      }
+    } else {
+      return 'is active now';
+    }
+  }
+
 
   final _auth = FirebaseAuth.instance;
   static ChatcubitCubit get(context) => BlocProvider.of(context);
@@ -40,28 +66,13 @@ class ChatcubitCubit extends Cubit<ChatcubitState> {
     });
   }
 
-  void getuserFriends() {
-    usersfriends = [];
-    emit(SocialGetallUserLoadingState());
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid!)
-        .collection('friends')
-        .get()
-        .then((value) {
-      for (var element in value.docs) {
-        if (element.data()['uId'] != uid) {
-          usersfriends.add(SocialUserModel.fromJson(element.data()));
-        }
-      }
-    }).catchError((e) {});
-  }
-
+  
   void getalluser() {
     allusers = [];
     emit(SocialGetallUserLoadingState());
     print('hi how are you');
-    FirebaseFirestore.instance.collection('users').get().then((value) {
+    FirebaseFirestore.instance.collection('users').
+    where('email',).get().then((value) {
       for (var element in value.docs) {
         print(element.data()['uId']);
         if (element.data()['uId'] != uid) {
@@ -74,22 +85,13 @@ class ChatcubitCubit extends Cubit<ChatcubitState> {
     });
   }
 
-//get friends only
 
-  List<SocialUserModel> usersfriends = [];
 
-  void setuserFriends(SocialUserModel frienduser) {
-    emit(SocialGetUserFriendsLoadingState());
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid!)
-        .collection('friends')
-        .add(frienduser.toMap())
-        .then((value) {
-      //  SocialUserModel.fromJson(element.data());
-      emit(SocialGetUserFriendsSucceddState());
-    }).catchError((e) {
-      emit(SocialGetUserFriendsFaileddState());
-    });
-  }
+
+
+
+
+
+
+
 }

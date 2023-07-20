@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project3/controller/signcontroller.dart';
-import 'package:project3/view/chat%20details/mainchat.dart';
+import 'package:project3/view/Chat/Home.dart';
 import 'package:project3/view/signin/signin.dart';
 import 'package:provider/provider.dart';
 
