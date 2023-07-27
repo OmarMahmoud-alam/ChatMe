@@ -1,16 +1,21 @@
-# project3
+# ChatMe
 
-A new Flutter project.
+it's a chat app with flutter and firebase.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1- autho 
+  I use firebase firebase_auth by :
+    .Email and password                  .google autho
+  and use provider as State Management
+2-Chat Message
+  .I use firebaseFirestore to store text message
+  .Image message upload image in firebase storeage and save link in firebaseFirestore
+3- notification
+  . i use Fcm for notification for recieve message 
+  .i use local notification if the ue open the app
+4-audio and video call
+  .i use zegocloud for implement video and audio calls
+5- State mangement
+  i use provider for login and register pages
+  othe pages i use bloc (Cubit)
