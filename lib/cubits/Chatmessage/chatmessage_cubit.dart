@@ -94,10 +94,10 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
     });
 
     bool? isconeect = await getlastseen(receiverId: receiver.uId);
-    if ((isconeect == null || !isconeect|| receiver.differenttime())) {
+    if ((isconeect == null || !isconeect || receiver.differenttime())) {
       FirebaseHelper.sendPushNotification(
           receiver.token[receiver.token.length - 1]!,
-          'massage from username',
+          'massage from ${receiver.name}',
           text);
     }
   }
@@ -167,15 +167,14 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
     });
   }
 
-  Future<void> sendimageMessage({
-    required String receiverId,
-    required int dateTime,
-    required String text,
-  }) async {
+  Future<void> sendimageMessage(
+      {required int dateTime,
+      required String text,
+      required SocialUserModel receiver}) async {
     MassageModel model = MassageModel(
       text: text,
       senduid: uid,
-      receiveid: receiverId,
+      receiveid: receiver.uId,
       datetime: dateTime,
       type: 'Image',
     );
@@ -187,7 +186,7 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
         .collection('users')
         .doc(uid)
         .collection('chats')
-        .doc(receiverId)
+        .doc(receiver.uId)
         .collection('messages')
         .add(model.toMap())
         .then((value) {
@@ -200,7 +199,7 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
 
     FirebaseFirestore.instance
         .collection('users')
-        .doc(receiverId)
+        .doc(receiver.uId)
         .collection('chats')
         .doc(uid)
         .collection('messages')
@@ -210,6 +209,13 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
     }).catchError((error) {
       emit(SocialSendMessageFailState());
     });
+    bool? isconeect = await getlastseen(receiverId: receiver.uId);
+    if ((isconeect == null || !isconeect || receiver.differenttime())) {
+      FirebaseHelper.sendPushNotification(
+          receiver.token[receiver.token.length - 1]!,
+          'massage from ${receiver.name}',
+          text);
+    }
   }
 
   SocialUserModel? caller;
@@ -270,7 +276,8 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
     return null;
   }
 
-  Future<void> SendImagemassage(ImageSource source, String receiverId) async {
+  Future<void> SendImagemassage(
+      ImageSource source, SocialUserModel receiver) async {
     emit(PickimageMassegeIntailState());
 
     final pickedFile = await picker.pickImage(
@@ -283,7 +290,7 @@ class ChatmessageCubit extends Cubit<ChatmessageState> {
       String link = await uploadpicture(profileImage);
       print('e33$link');
       await sendimageMessage(
-          receiverId: receiverId,
+          receiver: receiver,
           dateTime: DateTime.now().millisecondsSinceEpoch,
           text: link);
       emit(PickimageMassegeSuccessState());

@@ -39,7 +39,7 @@ class ChatDetails extends StatelessWidget {
               ),
               title: Row(
                 children: [
-                   CircleAvatar(
+                  CircleAvatar(
                       radius: 22,
                       backgroundImage: NetworkImage(
                         user!.cover,
@@ -131,7 +131,7 @@ class ChatDetails extends StatelessWidget {
                                       ),
                                       builder: (BuildContext bc) {
                                         return imagepackerform(
-                                          userid: user!.uId,
+                                          user: user!,
                                           blocprovid: blocprovider,
                                         );
                                       });

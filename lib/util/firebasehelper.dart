@@ -6,7 +6,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
-import 'package:project3/widget/sharedwidget.dart';
 
 class FirebaseHelper {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -20,31 +19,22 @@ class FirebaseHelper {
     // Get a reference to the user's document in Firestore
     final userDocRef =
         FirebaseFirestore.instance.collection("users").doc(userId);
-    final now = DateTime.now().millisecondsSinceEpoch;
+    int now = DateTime.now().millisecondsSinceEpoch;
+    await userDocRef.update({"lastseen": now});
 
     // Update the last seen timestamp every ten minutes
     Timer.periodic(const Duration(minutes: 10), (timer) async {
       try {
+        now = DateTime.now().millisecondsSinceEpoch;
         await userDocRef.update({"lastseen": now});
       } catch (e) {
-        print("Error updating last seen timestamp: $e");
       }
     });
   }
 
   static Future<void> start() async {
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
 
     await InitNotinfication();
-    print('User granted permission: ${settings.authorizationStatus}');
   }
 
   static final FlutterLocalNotificationsPlugin flutterLocalNotiPlugin =
@@ -69,7 +59,7 @@ class FirebaseHelper {
     if (message.notification != null) {
       LocalNotificationService.display(message);
     } else {
-      toast(txt: 'error404');
+
     }
   }
 
@@ -101,10 +91,9 @@ class FirebaseHelper {
         ),
       );
       response;
-      print('done100');
+  
     } catch (e) {
-      print('errrrrrrr$e');
-      toast(txt: '$e');
+
     }
   }
 }
@@ -130,7 +119,6 @@ class LocalNotificationService {
   static Future<void> display(RemoteMessage message) async {
     // To display the notification in device
     try {
-      print('notification staet');
       //print(message.notification!.android!.sound);
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       NotificationDetails notificationDetails = NotificationDetails(
@@ -153,7 +141,6 @@ class LocalNotificationService {
           message.notification?.body, notificationDetails,
           payload: message.data['route']);
     } catch (e) {
-      print(e.toString());
     }
   }
 }

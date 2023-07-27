@@ -52,56 +52,15 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  /*void setUser(User user) {
-    _user = user;
-    notifyListeners();
-  }
-
-void met(){
-  db.collection("users").where("id", isNotEqualTo: user!.uid).withConverter
-  (fromFirestore: , toFirestore: toFirestore);
-}*/
   String? verificatId;
-  /*void phone_autho(String number) async {
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: number,
-      verificationCompleted: (PhoneAuthCredential credential) {},
-      verificationFailed: (FirebaseAuthException e) {
-        log("the error is");
-      },
-      codeSent: (String verificationId, int? resendToken) async {
-        verificatId = verificationId;
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
-  }
-
-  void sendcode(String smsCode) async {
-    // Create a PhoneAuthCredential with the code
-    try {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verificatId!, smsCode: smsCode);
-
-      // Sign the user in (or link) with the credential
-      await auth.signInWithCredential(credential).then((value) {
-        toast(txt: 'sign in success');
-      });
-    } catch (e) {
-      toast(txt: e.toString());
-      log(e.toString());
-    }
-  }
-*/
 
   bool isclosing = true;
   void getCurrentUserInfo() async {
     user = auth.currentUser;
     if (user != null && isclosing) {
       startIsolate(user!.uid);
-      print('tototototootot');
       FirebaseHelper.token = await FirebaseMessaging.instance.getToken();
       //print(' FirebaseHelper.token');
-      toast(txt: FirebaseHelper.token ?? 'emmpttttt');
       FirebaseFirestore.instance
           .collection('users')
           .where("uId", isEqualTo: user!.uid)
@@ -138,7 +97,6 @@ void met(){
           'token': FieldValue.arrayUnion([FirebaseHelper.token]),
         });
       }).catchError((e) {
-        toast(txt: 'is empty 11 $e');
         // print('is empty   $e');
       });
     }
@@ -250,9 +208,7 @@ void met(){
 
 //check for sign in
   Future<void> formcheck(GlobalKey<FormState> formKey) async {
-    //makemassege(msg: 'start');
     if (formKey.currentState!.validate()) {
-      //  makemassege(msg: formKey.currentState!.toString());
       try {
         UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: emailcontroller.text,
@@ -262,7 +218,6 @@ void met(){
         getCurrentUserInfo();
         notifyListeners();
         makemassege(msg: 'done');
-        toast(txt: 'ttt3${userCredential.user!.uid}', color: Colors.deepOrange);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           makemassege(msg: 'userNotFound');
@@ -311,7 +266,6 @@ void met(){
         navigateto(context: context, widget: const HomeChat());
       }).catchError((e) {
         log(e.toString());
-        toast(txt: 'ttt5$e', color: Colors.red);
       });
       notifyListeners();
     }
@@ -334,10 +288,7 @@ void met(){
         log('is empty');
         adduser(uId: uId, name: name, email: email, phone: phone, cover: cover);
       }
-    }).catchError((e) {
-      toast(txt: 'is empty $e');
-      log('is empty   $e');
-    });
+    }).catchError((e) {});
   }
 
   void adduser(
@@ -363,12 +314,7 @@ void met(){
     storage.collection('users').doc(uId).set(user1.toMap()).then((value) {
       //   toast(txt: 'Done');
       notifyListeners();
-    }).catchError((e) {
-      // log(e.toString());
-      toast(txt: 'ttt1$e', color: Colors.red).then((value) {
-        //notifyListeners();
-      });
-    });
+    }).catchError((e) {});
   }
 
   String? Password_validation(String s) {

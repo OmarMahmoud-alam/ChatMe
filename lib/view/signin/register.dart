@@ -14,9 +14,7 @@ class register extends StatelessWidget {
     final formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('register'),
-      ),
+
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16),

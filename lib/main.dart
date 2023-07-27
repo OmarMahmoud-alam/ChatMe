@@ -1,12 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project3/controller/signcontroller.dart';
-import 'package:project3/util/absorve.dart';
 import 'package:project3/util/firebasehelper.dart';
 import 'package:project3/view/signin/emailsign.dart';
-
 import 'package:provider/provider.dart';
-
 import 'firebase_options.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
@@ -16,11 +13,6 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final observer = LifecycleObserver();
-
-  // Add the observer to the WidgetsBinding
-  WidgetsBinding.instance.addObserver(observer);
-
   await FirebaseHelper.start();
   final navigatorKey = GlobalKey<NavigatorState>();
 

@@ -17,9 +17,7 @@ class SignIn extends StatelessWidget {
     final formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign In'),
-      ),
+
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: formInput(formKey: formKey, provider: provider),

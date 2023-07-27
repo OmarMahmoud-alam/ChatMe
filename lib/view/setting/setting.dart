@@ -275,8 +275,15 @@ class Settingapp extends StatelessWidget {
                           await Provider.of<UserProvider>(context,
                                   listen: false)
                               .logout();
-                          navigateto(context: context, widget: const email());
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
 
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const email()),
+                          );
                           //  Cubitsetting.get(context).logout();
                         },
                         text: 'logout')),

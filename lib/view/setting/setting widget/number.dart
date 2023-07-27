@@ -36,7 +36,7 @@ class PhoneChange extends StatelessWidget {
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                   hoverColor: const Color.fromARGB(255, 166, 170, 173),
-                  hintText: myBloc.usertemp!.phone ?? "No name"),
+                  hintText: myBloc.usertemp!.phone ),
               validator: (String? s) {
                 if (s == null || s == '') {
                   return 'must enter value';

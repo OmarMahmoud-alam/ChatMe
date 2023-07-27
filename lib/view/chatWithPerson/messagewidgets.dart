@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project3/cubits/Chatmessage/chatmessage_cubit.dart';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:project3/module/user.dart';
 
 class mymassage extends StatelessWidget {
   final String text;
@@ -56,8 +57,8 @@ class mymassage extends StatelessWidget {
 
 class imagepackerform extends StatelessWidget {
   const imagepackerform(
-      {super.key, required this.userid, required this.blocprovid});
-  final String userid;
+      {super.key, required this.user, required this.blocprovid});
+  final SocialUserModel user;
   final ChatmessageCubit blocprovid;
 
   @override
@@ -69,13 +70,12 @@ class imagepackerform extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.camera),
             title: const Text('camera'),
-            onTap: () => blocprovid.SendImagemassage(ImageSource.camera, userid),
+            onTap: () => blocprovid.SendImagemassage(ImageSource.camera, user),
           ),
           ListTile(
             leading: const Icon(Icons.image),
             title: const Text('gallery'),
-            onTap: () =>
-                blocprovid.SendImagemassage(ImageSource.gallery, userid),
+            onTap: () => blocprovid.SendImagemassage(ImageSource.gallery, user),
           ),
           const SizedBox(
             height: 20,

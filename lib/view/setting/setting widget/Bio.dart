@@ -27,23 +27,21 @@ class BioChange extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),
-        child: Container(
-          child: Form(
-            key: mainkey,
-            child: TextFormField(
-              controller: controlleText,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                  hoverColor: Colors.blue,
-                  hintText: myBloc.usertemp!.bio ?? "No name"),
-              validator: (String? s) {
-                if (s == null || s == '') {
-                  return 'must enter value';
-                } else {
-                  return null;
-                }
-              },
-            ),
+        child: Form(
+          key: mainkey,
+          child: TextFormField(
+            controller: controlleText,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+                hoverColor: Colors.blue,
+                hintText: myBloc.usertemp!.bio ),
+            validator: (String? s) {
+              if (s == null || s == '') {
+                return 'must enter value';
+              } else {
+                return null;
+              }
+            },
           ),
         ),
       ),

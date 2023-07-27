@@ -16,8 +16,8 @@ class inputdata extends StatelessWidget {
 
   final int minline;
   final String? label;
-final TextInputAction? textInputAction;
-final void Function()? onEditingComplete;
+  final TextInputAction? textInputAction;
+  final void Function()? onEditingComplete;
   final String? Function(String?)? validation;
 
   @override
